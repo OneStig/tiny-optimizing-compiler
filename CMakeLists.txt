@@ -3,4 +3,6 @@ project(tiny_optimizing_compiler)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(tiny_optimizing_compiler main.cpp)
+file(GLOB SOURCES "src/*.cpp")
+add_executable(tiny_optimizing_compiler src/main.cpp
+        include/Token.h)
