@@ -1,5 +1,5 @@
 #include <iostream>
-#include <fstream>
+#include "FileReader.h"
 
 int main(const int argc, char* argv[]) {
     if (argc != 2) {
@@ -7,12 +7,7 @@ int main(const int argc, char* argv[]) {
         return 1;
     }
 
-    std::ifstream sourceFile(argv[1]);
-
-    if (!sourceFile.is_open()) {
-        std::cerr << "Failed to open tiny source file" << std::endl;
-        return 1;
-    }
+    FileReader fr(argv[1]);
 
     return 0;
 }
