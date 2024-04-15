@@ -8,4 +8,5 @@ file(GLOB SOURCES "src/*.cpp")
 add_executable(tiny_optimizing_compiler src/main.cpp
         include/Token.h
         include/FileReader.h
+        include/Lexer.h
 )

@@ -26,7 +26,7 @@ public:
         }
     }
 
-    char getNext() {
+    char nextChar() {
         if (char c; input.get(c)) {
             return c;
         }
