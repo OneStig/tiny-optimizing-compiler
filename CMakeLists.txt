@@ -9,4 +9,8 @@ add_executable(tiny_optimizing_compiler src/main.cpp
         include/Token.h
         include/FileReader.h
         include/Lexer.h
+        src/Parser.cpp
+        include/Parser.h
+        include/BasicBlock.h
+        include/Instruction.h
 )
