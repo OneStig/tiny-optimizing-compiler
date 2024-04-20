@@ -13,4 +13,6 @@ add_executable(tiny_optimizing_compiler src/main.cpp
         include/Parser.h
         include/BasicBlock.h
         include/Instruction.h
+        src/DOTGraph.cpp
+        include/DOTGraph.h
 )

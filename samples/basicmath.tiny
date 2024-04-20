@@ -1,0 +1,9 @@
+main
+var a, b, c, d;
+{
+	let a <- call InputNum();
+	let b <- call InputNum();
+	let c <- call InputNum();
+	let d = a * b + c;
+	call OutputNum(d);
+}

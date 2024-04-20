@@ -1,7 +1,9 @@
 #include <iostream>
 
+#include "DOTGraph.h"
 #include "FileReader.h"
 #include "Lexer.h"
+#include "Parser.h"
 
 int main(const int argc, char* argv[]) {
     if (argc != 2) {
@@ -12,11 +14,16 @@ int main(const int argc, char* argv[]) {
     FileReader fr(argv[1]);
     Lexer lexer(fr);
 
-    Token test = lexer.nextToken();
-    while (test.type != TokenType::END_OF_FILE) {
-        std::cout << test.toString() << std::endl;
-        test = lexer.nextToken();
-    }
+    // Token test = lexer.nextToken();
+    // while (test.type != TokenType::END_OF_FILE) {
+    //     std::cout << test.toString() << std::endl;
+    //     test = lexer.nextToken();
+    // }
+
+    Parser parser(lexer);
+    DOTGraph dg(parser.getBlocks());
+
+    std::cout << dg.visualize() << std::endl;
 
     return 0;
 }

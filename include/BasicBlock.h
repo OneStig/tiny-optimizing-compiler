@@ -9,16 +9,16 @@ class BasicBlock {
 public:
     std::deque<Instruction> instructions;
     int blockNum;
-    int left{};
-    int right{};
+    int follow{-1};
+    int branch{-1};
 
     explicit BasicBlock(const int num) : blockNum{num} {}
 
     [[nodiscard]] std::string toString() const {
-        std::string str = "BB" + blockNum;
+        std::string str = "BB" + std::to_string(blockNum) + "|";
 
         if (!instructions.empty()) {
-            str += "| {";
+            str += "{";
             bool first = true;
             for (const Instruction& i : instructions) {
                 if (!first) {
