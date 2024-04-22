@@ -21,9 +21,6 @@ int main(const int argc, char* argv[]) {
     // }
 
     Parser parser(lexer);
-    DOTGraph dg(parser.getBlocks());
-
-    std::cout << dg.visualize() << std::endl;
 
     return 0;
 }

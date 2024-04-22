@@ -15,4 +15,7 @@ add_executable(tiny_optimizing_compiler src/main.cpp
         include/Instruction.h
         src/DOTGraph.cpp
         include/DOTGraph.h
+        include/AST/ASTNode.h
+        include/AST/Statement.h
+        include/AST/Computation.h
 )

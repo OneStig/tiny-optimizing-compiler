@@ -1,29 +1,49 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include <vector>
+#include <memory>
 #include "BasicBlock.h"
 #include "Lexer.h"
+#include "AST/ASTNode.h"
 
 class Parser {
 private:
-    const Lexer& lx;
-    std::vector<BasicBlock> blocks;
-    int curBlock{};
+    Lexer& lx;
+    Token curToken;
 
     int factor();
     int term();
     int expression();
+    int relation();
 
-    void computation();
+    // Statements:
 
-public:
-    explicit Parser(const Lexer& lexer) : lx{lexer} {
-        computation();
+    void assignment();
+    void funcCall();
+    void ifStatement();
+    void whileStatement();
+    void returnStatement();
+
+    AST::ASTPtr statement();
+    AST::ASTPtr statSequence();
+
+    AST::ASTPtr varDecl();
+    AST::ASTPtr funcDecl();
+    AST::ASTPtr formalParam();
+    AST::ASTPtr funcBody();
+    AST::ASTPtr computation();
+
+    void next() {
+        curToken = lx.nextToken();
     }
 
-    [[nodiscard]] const std::vector<BasicBlock>& getBlocks() const {
-        return blocks;
+    static bool match(const Token& token, const TokenType type, const std::string& name = "") {
+        return token.type == type && token.name == name;
+    }
+
+public:
+    explicit Parser(Lexer& lexer) : lx{lexer}, curToken{lx.nextToken()} {
+        computation();
     }
 };
 

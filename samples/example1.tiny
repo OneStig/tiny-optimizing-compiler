@@ -7,4 +7,4 @@ var a, b, c, d, e; {
 	let e <- a + b;
 	if a < 0	then	let d <- d + e; let a <- d	else	let d<- e	fi;
 	call OutputNum(a)
-}
+}.

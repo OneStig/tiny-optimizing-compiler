@@ -24,7 +24,7 @@ struct Instruction {
         : id{id}, type{type}, x{x}, y{y} {}
 
     [[nodiscard]] std::string toString() const {
-        return id + ": " + insTypeToString(type)
+        return std::to_string(id) + ": " + insTypeToString(type)
             + (x ? " " + std::to_string(x) : "")
             + (y ? " " + std::to_string(y) : "");
     }
