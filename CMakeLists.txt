@@ -18,4 +18,9 @@ add_executable(tiny_optimizing_compiler src/main.cpp
         include/AST/ASTNode.h
         include/AST/Statement.h
         include/AST/Computation.h
+        src/ParseStatements.cpp
+        include/AST/StatSequence.h
+        include/AST/Assignment.h
+        src/ParseExpressions.cpp
+        include/AST/Expression.h
 )

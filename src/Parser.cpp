@@ -1,10 +1,20 @@
 #include "Parser.h"
 #include "AST/Computation.h"
 
-AST::ASTPtr Parser::computation() {
-    lx.nextToken(); // Consume 'main'
+AST::ASTPtr Parser::varDecl() {
+    next(); // Consume 'var'
+    return nullptr;
+}
 
-    AST::ASTPtr curNode = std::make_unique<AST::Computation>();
+AST::ASTPtr Parser::funcDecl() {
+    next(); // Consume 'var'
+    return nullptr;
+}
+
+AST::ASTPtr Parser::computation() {
+    next(); // Consume 'main'
+
+    auto curNode = std::make_unique<AST::Computation>();
 
     // [varDecl]
     if (match(curToken, TokenType::KEYWORD, "var")) {
@@ -19,12 +29,12 @@ AST::ASTPtr Parser::computation() {
 
     // "{" statSequence "}" "."
     if (match(curToken, TokenType::PUNCTUATION, "{")) {
-        lx.nextToken(); // Consume '{'
+        next(); // Consume '{'
         curNode->append(statSequence());
-        lx.nextToken(); // Consume '}'
+        next(); // Consume '}'
     }
 
-    lx.nextToken(); // Consume '.'
+    next(); // Consume '.'
 
     return curNode;
 }

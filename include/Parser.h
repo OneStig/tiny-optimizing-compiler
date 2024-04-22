@@ -8,21 +8,22 @@
 
 class Parser {
 private:
+    AST::ASTPtr ast;
     Lexer& lx;
     Token curToken;
 
-    int factor();
-    int term();
-    int expression();
-    int relation();
+    AST::ASTPtr factor();
+    AST::ASTPtr term();
+    AST::ASTPtr expression();
+    AST::ASTPtr relation();
 
     // Statements:
 
-    void assignment();
-    void funcCall();
-    void ifStatement();
-    void whileStatement();
-    void returnStatement();
+    AST::ASTPtr assignment();
+    AST::ASTPtr funcCall();
+    AST::ASTPtr ifStatement();
+    AST::ASTPtr whileStatement();
+    AST::ASTPtr returnStatement();
 
     AST::ASTPtr statement();
     AST::ASTPtr statSequence();
@@ -43,7 +44,7 @@ private:
 
 public:
     explicit Parser(Lexer& lexer) : lx{lexer}, curToken{lx.nextToken()} {
-        computation();
+        ast = computation();
     }
 };
 
