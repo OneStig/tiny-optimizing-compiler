@@ -8,7 +8,6 @@
 
 class Parser {
 private:
-    AST::ASTPtr ast;
     Lexer& lx;
     Token curToken;
 
@@ -36,6 +35,9 @@ private:
 
     void next() {
         curToken = lx.nextToken();
+#ifndef NDEBUG
+        std::cout << "Advance Token to: " << curToken.toString() << std::endl;
+#endif
     }
 
     static bool match(const Token& token, const TokenType type, const std::string& name = "") {
@@ -43,6 +45,8 @@ private:
     }
 
 public:
+    AST::ASTPtr ast;
+
     explicit Parser(Lexer& lexer) : lx{lexer}, curToken{lx.nextToken()} {
         ast = computation();
     }

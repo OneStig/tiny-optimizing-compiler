@@ -15,12 +15,15 @@ int main(const int argc, char* argv[]) {
     Lexer lexer(fr);
 
     // Token test = lexer.nextToken();
+    // int i = 1;
     // while (test.type != TokenType::END_OF_FILE) {
-    //     std::cout << test.toString() << std::endl;
+    //     std::cout << i++ << test.toString() << std::endl;
     //     test = lexer.nextToken();
     // }
 
     Parser parser(lexer);
+
+    AST::ASTPtr ast = std::move(parser.ast);
 
     return 0;
 }

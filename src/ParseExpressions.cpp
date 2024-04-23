@@ -7,9 +7,11 @@ AST::ASTPtr Parser::factor() {
 
     if (curToken.type == TokenType::IDENT) {
         curNode->ident = curToken.name;
+        next(); // consume ident
     }
     else if (curToken.type == TokenType::NUM) {
         curNode->value = curToken.value;
+        next(); // consume number
     }
     else if (match(curToken, TokenType::PUNCTUATION, "(")) {
         next(); // consume "("

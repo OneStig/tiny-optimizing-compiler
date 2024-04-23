@@ -1,9 +1,8 @@
 main
-var a, b, c, d;
 {
-	let a <- call InputNum();
-	let b <- call InputNum();
-	let c <- call InputNum();
-	let d = a * b + c;
+	let a <- 4;
+	let b <- 6;
+	let c <- 3;
+	let d <- a * b + c;
 	call OutputNum(d);
 }.

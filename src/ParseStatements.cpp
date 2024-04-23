@@ -12,6 +12,7 @@ AST::ASTPtr Parser::assignment() {
         // syntax error
     }
     curNode->ident = curToken.name;
+    next(); // consume ident
 
     next(); // consume "assignment"
 
@@ -59,6 +60,8 @@ AST::ASTPtr Parser::statSequence() {
     auto curNode = std::make_unique<AST::StatSequence>();
 
     do {
+        if (match(curToken, TokenType::PUNCTUATION, ";")) next(); // consume ";"
+
         curNode->append(statement());
     } while (match(curToken, TokenType::PUNCTUATION, ";"));
 
