@@ -1,6 +1,7 @@
 #include "Parser.h"
 #include "AST/Assignment.h"
 #include "AST/Computation.h"
+#include "AST/FuncCall.h"
 #include "AST/StatSequence.h"
 
 AST::ASTPtr Parser::assignment() {
@@ -22,8 +23,29 @@ AST::ASTPtr Parser::assignment() {
 }
 
 AST::ASTPtr Parser::funcCall() {
-    // uniimplemented
-    return nullptr;
+    auto curNode = std::make_unique<AST::FuncCall>();
+    next(); //consume "call"
+
+    // ident
+    if (curToken.type != TokenType::IDENT) {
+        // syntax error
+    }
+    curNode->ident = curToken.name;
+    next(); // consume ident
+
+    next(); // consume "("
+
+    do {
+        if (match(curToken, TokenType::PUNCTUATION, ",")) {
+            next(); // consume ","
+        }
+
+        curNode->append(expression());
+    } while (match(curToken, TokenType::PUNCTUATION, ","));
+
+    next(); // consume ")"
+
+    return curNode;
 }
 
 AST::ASTPtr Parser::ifStatement() {

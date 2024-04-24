@@ -52,7 +52,7 @@ public:
             next();
         }
 
-        if (curChar == EOF || curChar == '.') {
+        if (curChar == EOF) {
             return Token(TokenType::END_OF_FILE);
         }
 

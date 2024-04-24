@@ -58,7 +58,7 @@ const std::unordered_set<std::string> keywords = {
 
 const std::unordered_set<char> punctuation = {
 	'(', ')', '{', '}',
-	',', ';'
+	',', ';', '.'
 };
 
 const std::unordered_set<char> genericOperators = {

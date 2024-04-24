@@ -4,5 +4,5 @@ main
 	let b <- 6;
 	let c <- 3;
 	let d <- a * b + c;
-	call OutputNum(d);
+	call OutputNum(d)
 }.

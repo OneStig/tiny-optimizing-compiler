@@ -22,7 +22,6 @@ int main(const int argc, char* argv[]) {
     // }
 
     Parser parser(lexer);
-
     AST::ASTPtr ast = std::move(parser.ast);
 
     return 0;

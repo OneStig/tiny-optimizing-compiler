@@ -1,0 +1,4 @@
+- Replace instances of next() with some expect() advance
+- Allow optional ";" after statSequence
+- Finish full parsing
+- Fix graph viz
