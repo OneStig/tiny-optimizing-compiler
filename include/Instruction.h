@@ -10,7 +10,8 @@ enum class InsType {
     CONST,
     ADD, SUB, MUL, DIV, CMP,
     PHI,
-    BRA, BNE, BEQ, BLE, BLT, BGE, BGT
+    BRA, BNE, BEQ, BLE, BLT, BGE, BGT,
+    MT,
 };
 
 struct Instruction {
@@ -53,6 +54,7 @@ private:
             case InsType::BLT: return "blt";
             case InsType::BGE: return "bge";
             case InsType::BGT: return "bgt";
+            case InsType::MT: return "\\<empty\\>";
             default: return "UNKNOWN_INS";
         }
     }

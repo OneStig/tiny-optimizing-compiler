@@ -30,6 +30,9 @@ public:
 
     int evaluate(IRBuilder &builder, int block) override {
         // Do something later to check for undeclared variables
+        for (std::string& var : variables) {
+            builder.blocks[block].nameTable[var] = 0;
+        }
         return 0;
     }
 };

@@ -27,20 +27,43 @@ public:
         builder.blocks[branch].follow = join;
         builder.blocks[follow].branch = join;
 
-        // copy all name tables
+        // copy branch and follow name tables
         builder.blocks[branch].nameTable = builder.blocks[block].nameTable;
         builder.blocks[follow].nameTable = builder.blocks[block].nameTable;
-        builder.blocks[join].nameTable = builder.blocks[block].nameTable;
 
         const int cmpInstr = relation->evaluate(builder, block); // compares the two things
-        builder.emit(block, relation->relType, cmpInstr);
 
         // branch statSequence
         children[0]->evaluate(builder, branch);
 
         // follow statSequence
-        children[1]->evaluate(builder, branch);
+        children[1]->evaluate(builder, follow);
         builder.emit(follow, InsType::BRA, join);
+
+        // branch instruction from block
+        if (builder.blocks[branch].instructions.empty()) {
+            builder.emit(branch, InsType::MT);
+        }
+
+        builder.emit(block, relation->relType, cmpInstr, builder.blocks[branch].instructions[0].id);
+
+        // apply phi values
+
+        for (const auto& entry : builder.blocks[block].nameTable) {
+            const std::string& varName = entry.first;
+
+            if (builder.blocks[branch].nameTable[varName] ==
+                builder.blocks[follow].nameTable[varName]) {
+                builder.blocks[join].nameTable[varName] = builder.blocks[branch].nameTable[varName];
+            }
+            else {
+                const int varVal = builder.emit(join, InsType::PHI,
+                    builder.blocks[follow].nameTable[varName],
+                    builder.blocks[branch].nameTable[varName]);
+
+                builder.blocks[join].nameTable[varName] = varVal;
+            }
+        }
     }
 };
 
