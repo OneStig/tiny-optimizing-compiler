@@ -20,8 +20,26 @@ namespace AST {
     class Factor : public ASTNode {
     public:
         Factor() = default;
-        std::string ident;
+    };
+
+    class Identifier : public ASTNode {
+    public:
+        Identifier() = default;
+        std::string name;
+
+        int evaluate(IRBuilder &builder, int block) override {
+            return builder.blocks[block].nameTable[name];
+        }
+    };
+
+    class Number : public ASTNode {
+    public:
+        Number() = default;
         int value{};
+
+        int evaluate(IRBuilder &builder, int block) override {
+            return builder.emit(0, InsType::CONST, value);
+        }
     };
 }
 

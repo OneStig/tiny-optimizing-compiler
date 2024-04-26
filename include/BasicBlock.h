@@ -3,11 +3,15 @@
 
 #include <deque>
 #include <string>
+#include <unordered_map>
+
 #include "Instruction.h"
 
 class BasicBlock {
 public:
     std::deque<Instruction> instructions;
+    std::unordered_map<std::string, int> nameTable;
+
     int blockNum;
     int follow{-1};
     int branch{-1};

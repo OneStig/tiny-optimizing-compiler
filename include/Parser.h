@@ -35,9 +35,7 @@ private:
 
     void next() {
         curToken = lx.nextToken();
-#ifndef NDEBUG
-        std::cout << "Advance Token to: " << curToken.toString() << std::endl;
-#endif
+        // std::cout << "Advance Token to: " << curToken.toString() << std::endl;
     }
 
     static bool match(const Token& token, const TokenType type, const std::string& name = "") {

@@ -9,6 +9,10 @@ namespace AST {
     public:
         std::string ident;
         Assignment() = default;
+
+        int evaluate(IRBuilder &builder, int block) override {
+            builder.blocks[block].nameTable[ident] = children[0]->evaluate(builder, block);
+        }
     };
 }
 

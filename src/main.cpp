@@ -1,9 +1,9 @@
 #include <iostream>
 
-#include "DOTGraph.h"
 #include "FileReader.h"
 #include "Lexer.h"
 #include "Parser.h"
+#include "IRBuilder.h"
 
 int main(const int argc, char* argv[]) {
     if (argc != 2) {
@@ -11,7 +11,10 @@ int main(const int argc, char* argv[]) {
         return 1;
     }
 
+    // Read source file
     FileReader fr(argv[1]);
+
+    // Tokenize contents
     Lexer lexer(fr);
 
     // Token test = lexer.nextToken();
@@ -21,8 +24,12 @@ int main(const int argc, char* argv[]) {
     //     test = lexer.nextToken();
     // }
 
+    // Parse to produce AST
     Parser parser(lexer);
-    AST::ASTPtr ast = std::move(parser.ast);
+
+    // Build IR
+    IRBuilder builder;
+    parser.ast->evaluate(builder, 0);
 
     return 0;
 }

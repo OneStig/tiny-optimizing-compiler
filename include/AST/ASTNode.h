@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include "IRBuilder.h"
 
 namespace AST {
 
@@ -19,9 +20,9 @@ namespace AST {
             children.push_back(std::move(node));
         }
 
-        virtual int evaluate() {
+        virtual int evaluate(IRBuilder& builder, int block) {
             for (const ASTPtr &child: children) {
-                child->evaluate();
+                child->evaluate(builder, block);
             }
 
             return 0;

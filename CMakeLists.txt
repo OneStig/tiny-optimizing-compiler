@@ -24,4 +24,6 @@ add_executable(tiny_optimizing_compiler src/main.cpp
         src/ParseExpressions.cpp
         include/AST/Expression.h
         include/AST/FuncCall.h
+        src/IRBuilder.cpp
+        include/IRBuilder.h
 )

@@ -6,11 +6,16 @@ AST::ASTPtr Parser::factor() {
     auto curNode = std::make_unique<AST::Factor>();
 
     if (curToken.type == TokenType::IDENT) {
-        curNode->ident = curToken.name;
+        auto identNode = std::make_unique<AST::Identifier>();
+        identNode->name = curToken.name;
+        curNode->append(std::move(identNode));
+
         next(); // consume ident
     }
     else if (curToken.type == TokenType::NUM) {
-        curNode->value = curToken.value;
+        auto numNode = std::make_unique<AST::Number>();
+        numNode->value = curToken.value;
+        curNode->append(std::move(numNode));
         next(); // consume number
     }
     else if (match(curToken, TokenType::PUNCTUATION, "(")) {
