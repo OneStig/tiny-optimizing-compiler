@@ -17,12 +17,12 @@ DOTGraph::DOTGraph(const std::vector<BasicBlock>& blocks) {
 
         if (blocks[i].follow != -1) {
             controlFlow += "\tbb" + std::to_string(i) + ":s -> bb"
-                        + std::to_string(blocks[i].to) + ":n [label=\"fall-through\"];\n";
+                        + std::to_string(blocks[i].follow) + ":n [label=\"fall-through\"];\n";
         }
 
         if (blocks[i].branch != -1) {
             controlFlow += "\tbb" + std::to_string(i) + ":s -> bb"
-                        + std::to_string(blocks[i].to) + ":n [label=\"branch\"];\n";
+                        + std::to_string(blocks[i].branch) + ":n [label=\"branch\"];\n";
         }
         // domination
     }

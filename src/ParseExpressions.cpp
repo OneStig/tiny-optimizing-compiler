@@ -69,7 +69,23 @@ AST::ASTPtr Parser::expression() {
 
     return curNode;
 }
-AST::ASTPtr Parser::relation() {
-    // unimplemented
-    return nullptr;
+
+std::unique_ptr<AST::Relation> Parser::relation() {
+    auto curNode = std::make_unique<AST::Relation>();
+
+    curNode->append(expression());
+
+    // expect next token to be relOp
+    if (curToken.name == "!=") curNode->relType = InsType::BNE;
+    else if (curToken.name == "==") curNode->relType = InsType::BEQ;
+    else if (curToken.name == "<=") curNode->relType = InsType::BLE;
+    else if (curToken.name == "<") curNode->relType = InsType::BLT;
+    else if (curToken.name == ">=") curNode->relType = InsType::BGE;
+    else if (curToken.name == ">") curNode->relType = InsType::BGT;
+    else curNode->relType = InsType::BRA;
+    next(); // consume relOp
+
+    curNode->append(expression());
+
+    return curNode;
 }

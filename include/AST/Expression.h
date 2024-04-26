@@ -70,6 +70,18 @@ namespace AST {
             return builder.emit(0, InsType::CONST, value);
         }
     };
+
+    class Relation : public ASTNode {
+    public:
+        Relation() = default;
+        InsType relType;
+
+        int evaluate(IRBuilder &builder, int block) override {
+            return builder.emit(block, InsType::CMP,
+                children[0]->evaluate(builder, block),
+                children[1]->evaluate(builder, block));
+        }
+    };
 }
 
 #endif //EXPRESSION_H

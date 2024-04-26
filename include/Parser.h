@@ -5,6 +5,7 @@
 #include "BasicBlock.h"
 #include "Lexer.h"
 #include "AST/ASTNode.h"
+#include "AST/Expression.h"
 
 class Parser {
 private:
@@ -14,7 +15,7 @@ private:
     AST::ASTPtr factor();
     AST::ASTPtr term();
     AST::ASTPtr expression();
-    AST::ASTPtr relation();
+    std::unique_ptr<AST::Relation> relation();
 
     // Statements:
 
