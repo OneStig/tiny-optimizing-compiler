@@ -15,6 +15,7 @@ public:
     int blockNum;
     int follow{-1};
     int branch{-1};
+    int to{-1};
 
     explicit BasicBlock(const int num) : blockNum{num} {}
 

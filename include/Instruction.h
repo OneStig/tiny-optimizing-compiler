@@ -24,9 +24,13 @@ struct Instruction {
         : id{id}, type{type}, x{x}, y{y} {}
 
     [[nodiscard]] std::string toString() const {
+        if (type == InsType::CONST) {
+            return std::to_string(id) + ": const #" + std::to_string(x);
+        }
+
         return std::to_string(id) + ": " + insTypeToString(type)
-            + (x ? " " + std::to_string(x) : "")
-            + (y ? " " + std::to_string(y) : "");
+            + (x ? " (" + std::to_string(x) + ")" : "")
+            + (y ? " (" + std::to_string(y) + ")" : "");
     }
 
 private:

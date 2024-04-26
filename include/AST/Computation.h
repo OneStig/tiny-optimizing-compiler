@@ -12,6 +12,8 @@ public:
     int evaluate(IRBuilder &builder, int block) override {
         const int computationBlock = builder.newBlock();
 
+        builder.blocks[block].to = computationBlock;
+
         for (const ASTPtr &child: children) {
             child->evaluate(builder, computationBlock);
         }

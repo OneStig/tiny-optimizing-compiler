@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "DOTGraph.h"
 #include "FileReader.h"
 #include "Lexer.h"
 #include "Parser.h"
@@ -30,6 +31,10 @@ int main(const int argc, char* argv[]) {
     // Build IR
     IRBuilder builder;
     parser.ast->evaluate(builder, 0);
+
+    DOTGraph g(builder.blocks);
+
+    std::cout << g.visualize() << std::endl;
 
     return 0;
 }

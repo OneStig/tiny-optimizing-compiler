@@ -11,7 +11,8 @@ namespace AST {
         Assignment() = default;
 
         int evaluate(IRBuilder &builder, int block) override {
-            builder.blocks[block].nameTable[ident] = children[0]->evaluate(builder, block);
+            auto tmp = children[0]->evaluate(builder, block);
+            builder.blocks[block].nameTable[ident] = tmp;
         }
     };
 }
