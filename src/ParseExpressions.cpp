@@ -23,6 +23,9 @@ AST::ASTPtr Parser::factor() {
         curNode->append(expression());
         next(); // consume ")"
     }
+    else if (match(curToken, TokenType::KEYWORD, "call")) {
+        curNode->append(funcCall());
+    }
     else {
         // Syntax error
         return nullptr;

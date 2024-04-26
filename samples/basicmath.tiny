@@ -1,6 +1,6 @@
 main
-var a, b, c, d {
-	let a <- 4;
+var a, b, c, d; {
+	let a <- call InputNum();
 	let b <- 6;
 	let c <- 3;
 	let d <- c * b + a;

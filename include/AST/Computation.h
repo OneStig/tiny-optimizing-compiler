@@ -1,6 +1,7 @@
 #ifndef COMPUTATION_H
 #define COMPUTATION_H
 
+#include <string>
 #include "ASTNode.h"
 
 namespace AST {
@@ -18,6 +19,17 @@ public:
             child->evaluate(builder, computationBlock);
         }
 
+        return 0;
+    }
+};
+
+class VarDecl : public ASTNode {
+public:
+    VarDecl() = default;
+    std::vector<std::string> variables;
+
+    int evaluate(IRBuilder &builder, int block) override {
+        // Do something later to check for undeclared variables
         return 0;
     }
 };

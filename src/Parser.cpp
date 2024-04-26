@@ -3,11 +3,26 @@
 
 AST::ASTPtr Parser::varDecl() {
     next(); // Consume 'var'
-    return nullptr;
+
+    auto curNode = std::make_unique<AST::VarDecl>();
+
+    // assuming identifier ADD CHECK LATER
+    curNode->variables.push_back(curToken.name);
+    next(); // consume first identifier
+
+    while (match(curToken, TokenType::PUNCTUATION, ",")) {
+        next(); // consume ","
+        curNode->variables.push_back(curToken.name);
+        next(); // consume ident
+    }
+
+    next(); // consume ";"
+
+    return curNode;
 }
 
 AST::ASTPtr Parser::funcDecl() {
-    next(); // Consume 'var'
+    next(); // Consume 'void' or 'function'
     return nullptr;
 }
 
