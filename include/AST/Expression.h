@@ -10,7 +10,7 @@ namespace AST {
         Expression() = default;
         std::vector<bool> negate; // starting after first child
 
-        int evaluate(IRBuilder& builder, int block) override {
+        int evaluate(IRBuilder& builder, int& block) override {
             int curSSA = children[0]->evaluate(builder, block);
 
             for (int i = 1; i < children.size(); i++) {
@@ -28,7 +28,7 @@ namespace AST {
         Term() = default;
         std::vector<bool> divide; // starting after first child
 
-        int evaluate(IRBuilder& builder, int block) override {
+        int evaluate(IRBuilder& builder, int& block) override {
             int curSSA = children[0]->evaluate(builder, block);
 
             for (int i = 1; i < children.size(); i++) {
@@ -45,7 +45,7 @@ namespace AST {
     public:
         Factor() = default;
 
-        int evaluate(IRBuilder& builder, int block) override {
+        int evaluate(IRBuilder& builder, int& block) override {
             // return ssa value of 1st child regardless of num, ident, expr
             return children[0]->evaluate(builder, block);
         }
@@ -56,7 +56,7 @@ namespace AST {
         Identifier() = default;
         std::string name;
 
-        int evaluate(IRBuilder& builder, int block) override {
+        int evaluate(IRBuilder& builder, int& block) override {
             return builder.blocks[block].nameTable[name];
         }
     };
@@ -66,7 +66,7 @@ namespace AST {
         Number() = default;
         int value{};
 
-        int evaluate(IRBuilder &builder, int block) override {
+        int evaluate(IRBuilder &builder, int& block) override {
             return builder.emit(0, InsType::CONST, value);
         }
     };
@@ -76,7 +76,7 @@ namespace AST {
         Relation() = default;
         InsType relType;
 
-        int evaluate(IRBuilder &builder, int block) override {
+        int evaluate(IRBuilder &builder, int& block) override {
             return builder.emit(block, InsType::CMP,
                 children[0]->evaluate(builder, block),
                 children[1]->evaluate(builder, block));

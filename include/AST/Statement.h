@@ -16,10 +16,10 @@ public:
     IfStatement() = default;
     std::unique_ptr<Relation> relation;
 
-    int evaluate(IRBuilder &builder, int block) override {
-        const int branch = builder.newBlock();
-        const int follow = builder.newBlock();
-        const int join = builder.newBlock();
+    int evaluate(IRBuilder &builder, int& block) override {
+        int branch = builder.newBlock();
+        int follow = builder.newBlock();
+        int join = builder.newBlock();
 
         builder.blocks[block].branch = branch;
         builder.blocks[block].follow = follow;
@@ -64,6 +64,10 @@ public:
                 builder.blocks[join].nameTable[varName] = varVal;
             }
         }
+
+        block = join;
+
+        return 0;
     }
 };
 

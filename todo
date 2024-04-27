@@ -2,3 +2,4 @@
 - Allow optional ";" after statSequence
 - Finish full parsing
 - Fix graph viz
+- Allow use of undeclared variables

@@ -20,7 +20,7 @@ namespace AST {
             children.push_back(std::move(node));
         }
 
-        virtual int evaluate(IRBuilder& builder, int block) {
+        virtual int evaluate(IRBuilder& builder, int& block) {
             for (const ASTPtr &child: children) {
                 child->evaluate(builder, block);
             }

@@ -10,7 +10,7 @@ namespace AST {
         std::string ident;
         FuncCall() = default;
 
-        int evaluate(IRBuilder& builder, int block) override {
+        int evaluate(IRBuilder& builder, int& block) override {
 
             // Predefined functions
 

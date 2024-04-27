@@ -30,7 +30,8 @@ int main(const int argc, char* argv[]) {
 
     // Build IR
     IRBuilder builder;
-    parser.ast->evaluate(builder, 0);
+    int startBlock = 0;
+    parser.ast->evaluate(builder, startBlock);
 
     DOTGraph g(builder.blocks);
 
