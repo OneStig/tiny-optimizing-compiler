@@ -1,4 +1,8 @@
+#include <cstdlib>
 #include <iostream>
+
+#include <gvc.h>
+#include <cgraph.h>
 
 #include "DOTGraph.h"
 #include "FileReader.h"
@@ -35,7 +39,21 @@ int main(const int argc, char* argv[]) {
 
     DOTGraph g(builder.blocks);
 
-    std::cout << g.visualize() << std::endl;
+    std::string visualized = g.visualize();
+
+    GVC_t *gvc = gvContext();
+    const char* dotGraph = visualized.c_str();
+
+    Agraph_t *graph = agmemread(dotGraph);
+
+    gvLayout(gvc, graph, "dot");
+    gvRenderFilename(gvc, graph, "png", "output.png");
+    gvFreeLayout(gvc, graph);
+    agclose(graph);
+    gvFreeContext(gvc);
+
+    std::string command = "open output.png";
+    system(command.c_str());
 
     return 0;
 }
