@@ -19,8 +19,8 @@ add_executable(tiny_optimizing_compiler src/main.cpp
         include/lexing/Lexer.h
         src/parsing/Parser.cpp
         include/parsing/Parser.h
-        include/BasicBlock.h
-        include/Instruction.h
+        include/synthesis/BasicBlock.h
+        include/synthesis/Instruction.h
         src/graph/DOTGraph.cpp
         include/graph/DOTGraph.h
         include/parsing/AST/ASTNode.h
@@ -33,7 +33,7 @@ add_executable(tiny_optimizing_compiler src/main.cpp
         include/parsing/AST/Expression.h
         include/parsing/AST/FuncCall.h
         src/synthesis/IRBuilder.cpp
-        include/IRBuilder.h
+        include/synthesis/IRBuilder.h
         src/lexing/Lexer.cpp
         include/parsing/AST/ASTMaster.h
 )

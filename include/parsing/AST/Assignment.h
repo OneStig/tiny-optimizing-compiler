@@ -2,7 +2,7 @@
 #define ASSIGNMENT_H
 
 #include <string>
-#include "AST/Statement.h"
+#include "parsing/AST/Statement.h"
 
 namespace AST {
     class Assignment : public Statement {

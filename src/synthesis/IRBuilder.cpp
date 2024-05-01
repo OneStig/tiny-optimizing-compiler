@@ -1,4 +1,4 @@
-#include "IRBuilder.h"
+#include "../../include/synthesis/IRBuilder.h"
 
 int IRBuilder::emit(const int& block, const InsType type, const int x, const int y) {
     const InstrSig signature{type, x, y};

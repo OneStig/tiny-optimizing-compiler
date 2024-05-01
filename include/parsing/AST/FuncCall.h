@@ -2,7 +2,7 @@
 #define FUNCCALL_H
 
 #include <string>
-#include "AST/Statement.h"
+#include "parsing/AST/Statement.h"
 
 namespace AST {
     class FuncCall : public Statement { // children represent parameters

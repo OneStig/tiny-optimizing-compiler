@@ -1,10 +1,10 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "FileReader.h"
-#include "../include/lexing/Lexer.h"
-#include "Parser.h"
-#include "IRBuilder.h"
+#include "lexing/FileReader.h"
+#include "lexing/Lexer.h"
+#include "parsing/Parser.h"
+#include "synthesis/IRBuilder.h"
 #include "graph/DOTGraph.h"
 
 int main(const int argc, char* argv[]) {

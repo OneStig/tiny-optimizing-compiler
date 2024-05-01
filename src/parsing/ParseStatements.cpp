@@ -1,10 +1,9 @@
 #include "parsing/Parser.h"
 #include "parsing/AST/Assignment.h"
-#include "parsing/AST/Computation.h"
 #include "parsing/AST/FuncCall.h"
 #include "parsing/AST/StatSequence.h"
 
-AST::ASTPtr Parser::assignment() {
+std::unique_ptr<AST::Assignment> Parser::assignment() {
     auto curNode = std::make_unique<AST::Assignment>();
     next(); // consume "let"
 

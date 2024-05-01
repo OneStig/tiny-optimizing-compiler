@@ -1,6 +1,5 @@
-#include "Parser.h"
-#include "AST/Computation.h"
-#include "AST/Expression.h"
+#include "parsing/Parser.h"
+#include "parsing/AST/Expression.h"
 
 AST::ASTPtr Parser::factor() {
     auto curNode = std::make_unique<AST::Factor>();

@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 
-#include "BasicBlock.h"
+#include "synthesis/BasicBlock.h"
 
 class DOTGraph {
 public:
