@@ -25,6 +25,12 @@ DOTGraph::DOTGraph(const std::vector<BasicBlock>& blocks) {
                         + std::to_string(blocks[i].branch) + ":n [label=\"branch\"];\n";
         }
         // domination
+
+        if (blocks[i].domBy != -1) {
+            domination += "\tbb" + std::to_string(blocks[i].domBy) +
+                ":b -> bb" + std::to_string(i) +
+                ":b [color=blue, style=dotted, label=\"dom\"]\n";
+        }
     }
 
     construct += controlFlow + domination + "}";

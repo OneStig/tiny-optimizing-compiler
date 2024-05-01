@@ -14,6 +14,22 @@ enum class InsType {
     MT,
 };
 
+using InstrSig = std::tuple<InsType, int, int>;
+
+namespace std {
+    template<>
+    struct hash<InstrSig> {
+        size_t operator()(const InstrSig& sig) const {
+            auto [type, first, second] = sig;
+            size_t h1 = std::hash<InsType>()(type);
+            size_t h2 = std::hash<int>()(first);
+            size_t h3 = std::hash<int>()(second);
+
+            return h1 ^ (h2 << 1) ^ (h3 << 2);
+        }
+    };
+}
+
 struct Instruction {
     int id;
     InsType type;

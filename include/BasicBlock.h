@@ -3,6 +3,7 @@
 
 #include <deque>
 #include <string>
+#include <unordered_set>
 #include <unordered_map>
 
 #include "Instruction.h"
@@ -11,6 +12,9 @@ class BasicBlock {
 public:
     std::deque<Instruction> instructions;
     std::unordered_map<std::string, int> nameTable;
+
+    std::unordered_map<InstrSig, int> redunInstr;
+    int domBy{-1}; // store dominator tree digraph in reverse
 
     int blockNum;
     int follow{-1};

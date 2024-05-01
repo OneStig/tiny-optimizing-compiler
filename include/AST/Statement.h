@@ -21,6 +21,11 @@ public:
         int follow = builder.newBlock();
         int join = builder.newBlock();
 
+        // set domination
+        builder.blocks[branch].domBy = block;
+        builder.blocks[follow].domBy = block;
+        builder.blocks[join].domBy = block;
+
         builder.blocks[block].branch = branch;
         builder.blocks[block].follow = follow;
 
