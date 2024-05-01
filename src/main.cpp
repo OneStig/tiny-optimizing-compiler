@@ -1,14 +1,11 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <gvc.h>
-#include <cgraph.h>
-
-#include "DOTGraph.h"
 #include "FileReader.h"
-#include "Lexer.h"
+#include "../include/lexing/Lexer.h"
 #include "Parser.h"
 #include "IRBuilder.h"
+#include "graph/DOTGraph.h"
 
 int main(const int argc, char* argv[]) {
     if (argc != 2) {
@@ -16,18 +13,9 @@ int main(const int argc, char* argv[]) {
         return 1;
     }
 
-    // Read source file
+    // Read source file and tokenize contents
     FileReader fr(argv[1]);
-
-    // Tokenize contents
     Lexer lexer(fr);
-
-    // Token test = lexer.nextToken();
-    // int i = 1;
-    // while (test.type != TokenType::END_OF_FILE) {
-    //     std::cout << i++ << test.toString() << std::endl;
-    //     test = lexer.nextToken();
-    // }
 
     // Parse to produce AST
     Parser parser(lexer);
@@ -37,23 +25,9 @@ int main(const int argc, char* argv[]) {
     int startBlock = 0;
     parser.ast->evaluate(builder, startBlock);
 
+    // Generate dot graph
     DOTGraph g(builder.blocks);
-
-    std::string visualized = g.visualize();
-
-    GVC_t *gvc = gvContext();
-    const char* dotGraph = visualized.c_str();
-
-    Agraph_t *graph = agmemread(dotGraph);
-
-    gvLayout(gvc, graph, "dot");
-    gvRenderFilename(gvc, graph, "png", "output.png");
-    gvFreeLayout(gvc, graph);
-    agclose(graph);
-    gvFreeContext(gvc);
-
-    std::string command = "open output.png";
-    system(command.c_str());
+    g.visualize();
 
     return 0;
 }

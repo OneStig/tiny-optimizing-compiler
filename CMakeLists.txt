@@ -14,26 +14,28 @@ link_directories(${GRAPHVIZ_LIBRARY_DIRS})
 include_directories(include)
 file(GLOB SOURCES "src/*.cpp")
 add_executable(tiny_optimizing_compiler src/main.cpp
-        include/Token.h
-        include/FileReader.h
-        include/Lexer.h
-        src/Parser.cpp
-        include/Parser.h
+        include/lexing/Token.h
+        include/lexing/FileReader.h
+        include/lexing/Lexer.h
+        src/parsing/Parser.cpp
+        include/parsing/Parser.h
         include/BasicBlock.h
         include/Instruction.h
-        src/DOTGraph.cpp
-        include/DOTGraph.h
-        include/AST/ASTNode.h
-        include/AST/Statement.h
-        include/AST/Computation.h
-        src/ParseStatements.cpp
-        include/AST/StatSequence.h
-        include/AST/Assignment.h
-        src/ParseExpressions.cpp
-        include/AST/Expression.h
-        include/AST/FuncCall.h
-        src/IRBuilder.cpp
+        src/graph/DOTGraph.cpp
+        include/graph/DOTGraph.h
+        include/parsing/AST/ASTNode.h
+        include/parsing/AST/Statement.h
+        include/parsing/AST/Computation.h
+        src/parsing/ParseStatements.cpp
+        include/parsing/AST/StatSequence.h
+        include/parsing/AST/Assignment.h
+        src/parsing/ParseExpressions.cpp
+        include/parsing/AST/Expression.h
+        include/parsing/AST/FuncCall.h
+        src/synthesis/IRBuilder.cpp
         include/IRBuilder.h
+        src/lexing/Lexer.cpp
+        include/parsing/AST/ASTMaster.h
 )
 
 target_link_libraries(tiny_optimizing_compiler ${GRAPHVIZ_LIBRARIES})

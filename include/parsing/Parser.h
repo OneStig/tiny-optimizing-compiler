@@ -2,10 +2,9 @@
 #define PARSER_H
 
 #include <memory>
-#include "BasicBlock.h"
-#include "Lexer.h"
-#include "AST/ASTNode.h"
-#include "AST/Expression.h"
+
+#include "AST/ASTMaster.h"
+#include "lexing/Lexer.h"
 
 class Parser {
 private:
@@ -19,7 +18,7 @@ private:
 
     // Statements:
 
-    AST::ASTPtr assignment();
+    std::unique_ptr<AST::Assignment> assignment();
     AST::ASTPtr funcCall();
     AST::ASTPtr ifStatement();
     AST::ASTPtr whileStatement();
