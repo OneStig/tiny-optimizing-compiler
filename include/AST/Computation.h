@@ -20,6 +20,10 @@ public:
 
         // fix the branch joins
         for (const auto& br : builder.branches) {
+            if (builder.blocks[br.second].instructions.empty()) {
+                builder.emit(br.second, InsType::MT);
+            }
+
             builder.blocks[br.first].instructions.back().x = builder.blocks[br.second].instructions.front().id;
         }
 

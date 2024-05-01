@@ -81,6 +81,10 @@ public:
 
         if (curChar == '>') {
             next();
+            if (curChar == '=') {
+                next();
+                return Token(TokenType::RELOP, ">=");
+            }
             return Token(TokenType::RELOP, ">");
         }
 
@@ -100,11 +104,12 @@ public:
             return Token(TokenType::RELOP, "<");
         }
 
-        if (curChar == '=' || curChar == '!' || curChar == '>') {
+        if (curChar == '=' || curChar == '!') {
             const char tmp = curChar;
             next();
 
             if (curChar == '=') {
+                next();
                 return Token(TokenType::RELOP, std::string(1, tmp) + "=");
             }
         }

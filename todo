@@ -3,3 +3,6 @@
 - Finish full parsing
 - Fix graph viz
 - Allow use of undeclared variables
+
+Questions:
+1. If no else, should we still create an empty basic block that falls-through back to the join?
