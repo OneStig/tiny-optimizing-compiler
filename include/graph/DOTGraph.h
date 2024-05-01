@@ -8,13 +8,13 @@
 #include <vector>
 #include <string>
 
-#include "BasicBlock.h"
+#include "synthesis/BasicBlock.h"
 
 class DOTGraph {
 public:
     explicit DOTGraph(const std::vector<BasicBlock>& blocks);
 
-    std::string visualize();
+    void visualize() const;
 
 private:
     std::string construct;

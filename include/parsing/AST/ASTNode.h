@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <memory>
-#include "IRBuilder.h"
+#include "../../synthesis/IRBuilder.h"
 
 namespace AST {
 

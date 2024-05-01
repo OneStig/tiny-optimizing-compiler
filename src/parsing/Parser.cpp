@@ -1,5 +1,5 @@
-#include "Parser.h"
-#include "AST/Computation.h"
+#include "parsing/Parser.h"
+#include "parsing/AST/Declarations.h"
 
 AST::ASTPtr Parser::varDecl() {
     next(); // Consume 'var'
