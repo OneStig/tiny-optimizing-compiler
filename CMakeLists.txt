@@ -24,18 +24,18 @@ add_executable(tiny_optimizing_compiler src/main.cpp
         src/graph/DOTGraph.cpp
         include/graph/DOTGraph.h
         include/parsing/AST/ASTNode.h
-        include/parsing/AST/Statement.h
-        include/parsing/AST/Computation.h
+        include/parsing/AST/Statements.h
+        include/parsing/AST/Declarations.h
         src/parsing/ParseStatements.cpp
-        include/parsing/AST/StatSequence.h
-        include/parsing/AST/Assignment.h
         src/parsing/ParseExpressions.cpp
-        include/parsing/AST/Expression.h
-        include/parsing/AST/FuncCall.h
+        include/parsing/AST/Expressions.h
         src/synthesis/IRBuilder.cpp
         include/synthesis/IRBuilder.h
         src/lexing/Lexer.cpp
         include/parsing/AST/ASTMaster.h
+        src/synthesis/Statements.cpp
+        src/synthesis/Expressions.cpp
+        src/synthesis/Declarations.cpp
 )
 
 target_link_libraries(tiny_optimizing_compiler ${GRAPHVIZ_LIBRARIES})
