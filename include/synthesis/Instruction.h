@@ -14,16 +14,43 @@ enum class InsType {
     MT,
 };
 
+inline bool isCommutable(const InsType type) {
+    return type == InsType::ADD || type == InsType::MUL;
+}
+
 using InstrSig = std::tuple<InsType, int, int>;
 
 namespace std {
+    template<>
+    struct equal_to<InstrSig> {
+        bool operator()(const InstrSig& lhs, const InstrSig& rhs) const {
+            const auto& [type1, x1, y1] = lhs;
+            const auto& [type2, x2, y2] = rhs;
+
+            if (type1 != type2) return false;
+
+            if (isCommutable(type1)) {
+                return (x1 == x2 && y1 == y2) || (x1 == y2 && y1 == x2);
+            }
+
+            return x1 == x2 && y1 == y2;
+        }
+    };
+
     template<>
     struct hash<InstrSig> {
         size_t operator()(const InstrSig& sig) const {
             auto [type, first, second] = sig;
             size_t h1 = std::hash<InsType>()(type);
-            size_t h2 = std::hash<int>()(first);
-            size_t h3 = std::hash<int>()(second);
+            size_t h2, h3;
+
+            if (isCommutable(type)) {
+                h2 = std::hash<int>()(std::min(first, second));
+                h3 = std::hash<int>()(std::max(first, second));
+            } else {
+                h2 = std::hash<int>()(first);
+                h3 = std::hash<int>()(second);
+            }
 
             return h1 ^ (h2 << 1) ^ (h3 << 2);
         }
