@@ -42,6 +42,14 @@ public:
     int evaluate(IRBuilder &builder, int& block) override;
 };
 
+class WhileStatement : public Statement {
+public:
+    WhileStatement() = default;
+    std::unique_ptr<Relation> relation;
+
+    int evaluate(IRBuilder &builder, int& block) override;
+};
+
 }
 
 #endif //STATEMENT_H

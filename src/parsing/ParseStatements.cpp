@@ -46,9 +46,8 @@ AST::ASTPtr Parser::funcCall() {
 }
 
 AST::ASTPtr Parser::ifStatement() {
-    // first child is relation
-    // second child is then statSequence
-    // [optional] third child is else statSequence
+    // first child is then statSequence
+    // [optional] second child is else statSequence
 
     auto curNode = std::make_unique<AST::IfStatement>();
     next(); // consusme "if"
@@ -67,8 +66,12 @@ AST::ASTPtr Parser::ifStatement() {
 }
 
 AST::ASTPtr Parser::whileStatement() {
-    // unimplemented
-    return nullptr;
+    auto curNode = std::make_unique<AST::WhileStatement>();
+    next(); // consume "while"
+    curNode->relation = std::move(relation());
+    next(); // consume "do"
+    curNode->append(statSequence());
+    next(); // consume "od"
 }
 
 AST::ASTPtr Parser::returnStatement() {

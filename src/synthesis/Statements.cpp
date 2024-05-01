@@ -19,6 +19,10 @@ int AST::FuncCall::evaluate(IRBuilder& builder, int& block)  {
     return 0;
 }
 
+int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
+    return 0;
+}
+
 int AST::IfStatement::evaluate(IRBuilder &builder, int& block) {
     int branch = builder.newBlock();
     int follow = builder.newBlock();
@@ -32,8 +36,6 @@ int AST::IfStatement::evaluate(IRBuilder &builder, int& block) {
     builder.blocks[block].branch = branch;
     builder.blocks[block].follow = follow;
 
-    builder.blocks[branch].follow = join;
-    builder.blocks[follow].branch = join;
 
     // copy branch and follow name tables
     builder.blocks[branch].nameTable = builder.blocks[block].nameTable;
@@ -59,6 +61,9 @@ int AST::IfStatement::evaluate(IRBuilder &builder, int& block) {
 
     builder.emit(block, relation->relType, cmpInstr, builder.blocks[branch].instructions[0].id);
 
+    builder.blocks[branch].follow = join;
+    builder.blocks[follow].branch = join;
+
     // apply phi values
 
     for (const auto& entry : builder.blocks[block].nameTable) {
@@ -83,10 +88,8 @@ int AST::IfStatement::evaluate(IRBuilder &builder, int& block) {
 }
 
 int AST::StatSequence::evaluate(IRBuilder &builder, int &block) {
-    int curBlock = block;
-
     for (const ASTPtr &child: children) {
-        child->evaluate(builder, curBlock);
+        child->evaluate(builder, block);
     }
 
     return 0;
