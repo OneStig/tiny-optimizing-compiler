@@ -8,6 +8,7 @@
 class IRBuilder {
 public:
     std::vector<BasicBlock> blocks;
+    std::vector<std::pair<int, int>> branches;
 
     IRBuilder() {
         // Constants block

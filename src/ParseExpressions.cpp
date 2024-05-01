@@ -76,12 +76,13 @@ std::unique_ptr<AST::Relation> Parser::relation() {
     curNode->append(expression());
 
     // expect next token to be relOp
-    if (curToken.name == "!=") curNode->relType = InsType::BNE;
-    else if (curToken.name == "==") curNode->relType = InsType::BEQ;
-    else if (curToken.name == "<=") curNode->relType = InsType::BLE;
-    else if (curToken.name == "<") curNode->relType = InsType::BLT;
-    else if (curToken.name == ">=") curNode->relType = InsType::BGE;
-    else if (curToken.name == ">") curNode->relType = InsType::BGT;
+    // (conditions are flipped because we branch on else)
+    if (curToken.name == "!=") curNode->relType = InsType::BEQ;
+    else if (curToken.name == "==") curNode->relType = InsType::BNE;
+    else if (curToken.name == "<=") curNode->relType = InsType::BGT;
+    else if (curToken.name == "<") curNode->relType = InsType::BGE;
+    else if (curToken.name == ">=") curNode->relType = InsType::BLT;
+    else if (curToken.name == ">") curNode->relType = InsType::BLE;
     else curNode->relType = InsType::BRA;
     next(); // consume relOp
 

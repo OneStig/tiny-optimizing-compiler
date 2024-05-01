@@ -38,12 +38,16 @@ public:
 
         const int cmpInstr = relation->evaluate(builder, block); // compares the two things
 
-        // branch statSequence
-        children[0]->evaluate(builder, branch);
+        // follow statSequence (if condition)
+        children[0]->evaluate(builder, follow);
 
-        // follow statSequence
-        children[1]->evaluate(builder, follow);
+        // branch statSequence (else)
+        if (children.size() == 2) {
+            children[1]->evaluate(builder, branch);
+        }
+
         builder.emit(follow, InsType::BRA, join);
+        builder.branches.emplace_back(follow, join);
 
         // branch instruction from block
         if (builder.blocks[branch].instructions.empty()) {

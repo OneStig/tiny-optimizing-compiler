@@ -18,6 +18,11 @@ public:
             child->evaluate(builder, computationBlock);
         }
 
+        // fix the branch joins
+        for (const auto& br : builder.branches) {
+            builder.blocks[br.first].instructions.back().x = builder.blocks[br.second].instructions.front().id;
+        }
+
         return 0;
     }
 };
