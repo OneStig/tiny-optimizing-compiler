@@ -33,21 +33,13 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
     builder.blocks[body].domBy = head;
     builder.blocks[exit].domBy = head;
 
-    // negate all values to come back around and fix phi
+    // copy name tables
+    builder.blocks[head].nameTable = builder.blocks[block].nameTable;
+    builder.blocks[body].nameTable = builder.blocks[block].nameTable;
 
-    std::unordered_map<int, std::string> reverseTable;
+    builder.blocks[head].follow = body;
 
-    for (const auto& entry : builder.blocks[head].nameTable) {
-        int negated = entry.second < 0 ? entry.second : -entry.second;
-        builder.blocks[head].nameTable[entry.first] = negated;
-        builder.blocks[body].nameTable[entry.first] = negated;
-
-        if (entry.second != negated) {
-            reverseTable[negated] = entry.first;
-        }
-    }
-
-    const int cmpInstr = relation->evaluate(builder, block); // compares the two things
+    const int cmpInstr = relation->evaluate(builder, head); // compares the two things
     children[0]->evaluate(builder, body);
 
     builder.emit(head, relation->relType, cmpInstr, builder.blocks[body].instructions.front().id);
@@ -62,17 +54,9 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
         const std::string& var = entry1.first;
         int& val2 = builder.blocks[body].nameTable[var];
 
-        // if body is negative, must have been replaced above. if neq, must be positive
-        if (entry1.second != builder.blocks[body].nameTable[var]) {
-            if (entry1.second == -val2) {
-                val2 = -val2;
-                builder.blocks[head].nameTable[var] = val2;
-
-                instrSwap[-val2] = val2;
-            }
-            else {
-                instrSwap[-entry1.second] = builder.emit(head, InsType::PHI, entry1.second, val2, true);
-            }
+        if (entry1.second != val2) {
+            const int newInstr = builder.emit(head, InsType::PHI, entry1.second, val2, true);
+            instrSwap[entry1.second] = newInstr;
         }
     }
 
@@ -92,11 +76,11 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
         }
 
         for (auto& instr : builder.blocks[curReplace].instructions) {
-            if (instrSwap.contains(instr.x)) {
+            if (instrSwap.contains(instr.x) && instr.id != instrSwap[instr.x]) {
                 instr.x = instrSwap[instr.x];
             }
 
-            if (instrSwap.contains(instr.y)) {
+            if (instrSwap.contains(instr.y) && instr.id != instrSwap[instr.y]) {
                 instr.y = instrSwap[instr.y];
             }
         }
@@ -118,8 +102,9 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
     }
 
     // after body is filled
-    builder.emit(body, InsType::BRA, builder.blocks[head].instructions.front().id);
     builder.blocks[exit].nameTable = builder.blocks[head].nameTable;
+    builder.blocks[body].branch = head;
+    builder.blocks[head].branch = exit;
 
     block = exit;
 
