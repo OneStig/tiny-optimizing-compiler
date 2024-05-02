@@ -4,12 +4,16 @@ var a, b; {
 	let b <- call InputNum();
 	if a > 0 then
 	    if b > 0 then
+            call OutputNum(0)
+        else
+            call OutputNum(1)
+        fi
+	else
+	    if b > 0 then
             call OutputNum(1)
         else
             call OutputNum(0)
         fi
-	else
-	    call OutputNum(0)
 	fi;
 	call OutputNum(2)
 }.

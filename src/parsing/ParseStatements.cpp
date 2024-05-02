@@ -72,6 +72,8 @@ AST::ASTPtr Parser::whileStatement() {
     next(); // consume "do"
     curNode->append(statSequence());
     next(); // consume "od"
+
+    return curNode;
 }
 
 AST::ASTPtr Parser::returnStatement() {

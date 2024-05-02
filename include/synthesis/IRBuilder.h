@@ -15,7 +15,7 @@ public:
         newBlock();
     }
 
-    int emit(const int& block, InsType type, int x = 0, int y = 0);
+    int emit(const int& block, InsType type, int x = 0, int y = 0, bool front = false);
     int newBlock();
 
 private:
