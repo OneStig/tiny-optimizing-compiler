@@ -42,7 +42,8 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
     const int cmpInstr = relation->evaluate(builder, head); // compares the two things
     children[0]->evaluate(builder, body);
 
-    builder.emit(head, relation->relType, cmpInstr, builder.blocks[body].instructions.front().id);
+    builder.emit(head, relation->relType, cmpInstr, body);
+    builder.branches.emplace_back(head, body);
     builder.emit(body, InsType::BRA, head);
     builder.branches.emplace_back(body, head);
 

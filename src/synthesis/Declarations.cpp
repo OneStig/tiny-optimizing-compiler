@@ -14,7 +14,12 @@ int AST::Computation::evaluate(IRBuilder &builder, int& block) {
             builder.emit(br.second, InsType::MT);
         }
 
-        builder.blocks[br.first].instructions.back().x = builder.blocks[br.second].instructions.front().id;
+        if (builder.blocks[br.first].instructions.back().type == InsType::BRA) {
+            builder.blocks[br.first].instructions.back().x = builder.blocks[br.second].instructions.front().id;
+        }
+        else {
+            builder.blocks[br.first].instructions.back().y = builder.blocks[br.second].instructions.front().id;
+        }
     }
 
     return 0;
