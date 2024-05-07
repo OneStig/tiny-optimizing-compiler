@@ -4,7 +4,7 @@ int IRBuilder::emit(const int& block, const InsType type, const int x, const int
     const InstrSig signature{type, x, y};
 
     // check if value has been computed in cur block, or anywhere up dom tree
-    if (type != InsType::READ && type != InsType::PHI) {
+    if (type != InsType::READ && type != InsType::PHI && type != InsType::WRITE) {
         int dominated = block;
 
         while (dominated != -1) {
