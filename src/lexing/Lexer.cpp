@@ -6,39 +6,39 @@ Token Lexer::nextToken() {
     }
 
     if (curChar == EOF) {
-        return Token(TokenType::END_OF_FILE);
+        return Token(TokenType::END_OF_FILE, globalLine, globalCol);
     }
 
     // Number literals
     if (isdigit(curChar)) {
-        return Token(TokenType::NUM, "", number());
+        return Token(TokenType::NUM, globalLine, globalCol, "", number());
     }
 
     // Keywords and identifiers
     if (isalpha(curChar)) {
         const std::string name = identifier();
-        return Token(keywords.contains(name) ? TokenType::KEYWORD : TokenType::IDENT, name);
+        return Token(keywords.contains(name) ? TokenType::KEYWORD : TokenType::IDENT, globalLine, globalCol, name);
     }
 
     if (punctuation.contains(curChar)) {
         const std::string puncStr(1, curChar);
         next();
-        return Token(TokenType::PUNCTUATION, puncStr);
+        return Token(TokenType::PUNCTUATION, globalLine, globalCol, puncStr);
     }
 
     if (genericOperators.contains(curChar)) {
         const std::string opStr(1, curChar);
         next();
-        return Token(TokenType::GENOP, opStr);
+        return Token(TokenType::GENOP, globalLine, globalCol, opStr);
     }
 
     if (curChar == '>') {
         next();
         if (curChar == '=') {
             next();
-            return Token(TokenType::RELOP, ">=");
+            return Token(TokenType::RELOP, globalLine, globalCol, ">=");
         }
-        return Token(TokenType::RELOP, ">");
+        return Token(TokenType::RELOP, globalLine, globalCol, ">");
     }
 
     // Checking if '<' is relational or assignment
@@ -46,15 +46,15 @@ Token Lexer::nextToken() {
         next();
         if (curChar == '=') {
             next();
-            return Token(TokenType::RELOP, "<=");
+            return Token(TokenType::RELOP, globalLine, globalCol, "<=");
         }
 
         if (curChar == '-') {
             next();
-            return Token(TokenType::ASSIGN);
+            return Token(TokenType::ASSIGN, globalLine, globalCol);
         }
 
-        return Token(TokenType::RELOP, "<");
+        return Token(TokenType::RELOP, globalLine, globalCol, "<");
     }
 
     if (curChar == '=' || curChar == '!') {
@@ -63,7 +63,7 @@ Token Lexer::nextToken() {
 
         if (curChar == '=') {
             next();
-            return Token(TokenType::RELOP, std::string(1, tmp) + "=");
+            return Token(TokenType::RELOP, globalLine, globalCol, std::string(1, tmp) + "=");
         }
     }
 
@@ -72,6 +72,15 @@ Token Lexer::nextToken() {
 
 char Lexer::next() {
     curChar = fr.nextChar();
+
+    if (curChar == '\n') {
+        globalLine++;
+        globalCol = 0;
+    }
+    else {
+        globalCol++;
+    }
+
     return curChar;
 }
 

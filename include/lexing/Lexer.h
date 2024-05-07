@@ -13,6 +13,7 @@ public:
 
 class Lexer {
 public:
+    int globalLine{1}, globalCol{0};
     explicit Lexer(FileReader& fr) : fr(fr) {
         curChar = fr.nextChar();
     }

@@ -33,7 +33,13 @@ private:
     AST::ASTPtr funcBody();
     AST::ASTPtr computation();
 
-    void next() {
+    void next(const TokenType& expected) {
+        if (curToken.type != expected) {
+            throw TinySyntaxError("Syntax Error: Expected " + Token::tokenTypeToString(expected) + ", found" +
+                                    Token::tokenTypeToString(curToken.type) + " instead at Line " +
+                                    std::to_string(curToken.line) + ", Col " + std::to_string(curToken.col));
+        }
+
         curToken = lx.nextToken();
         // std::cout << "Advance Token to: " << curToken.toString() << std::endl;
     }

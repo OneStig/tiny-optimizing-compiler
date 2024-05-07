@@ -14,9 +14,10 @@ struct Token {
     TokenType type;
     std::string name;
     int value;
+	int line, col;
 
-	explicit Token(const TokenType t, std::string n = "", const int v = 0) :
-		type{t}, name{std::move(n)}, value{v} {}
+	explicit Token(const TokenType t, const int line, const int col, std::string n = "", const int v = 0) :
+		type{t}, name{std::move(n)}, value{v}, line{line}, col{col} {}
 
     [[nodiscard]] std::string toString() const {
         std::string typeStr = tokenTypeToString(type);
@@ -29,7 +30,6 @@ struct Token {
         return result;
     }
 
-private:
     static std::string tokenTypeToString(TokenType type) {
         switch (type) {
             case TokenType::IDENT: return "IDENT";

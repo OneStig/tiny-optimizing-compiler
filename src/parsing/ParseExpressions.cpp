@@ -9,18 +9,18 @@ AST::ASTPtr Parser::factor() {
         identNode->name = curToken.name;
         curNode->append(std::move(identNode));
 
-        next(); // consume ident
+        next(TokenType::IDENT); // consume ident
     }
     else if (curToken.type == TokenType::NUM) {
         auto numNode = std::make_unique<AST::Number>();
         numNode->value = curToken.value;
         curNode->append(std::move(numNode));
-        next(); // consume number
+        next(TokenType::NUM); // consume number
     }
     else if (match(curToken, TokenType::PUNCTUATION, "(")) {
-        next(); // consume "("
+        next(TokenType::PUNCTUATION); // consume "("
         curNode->append(expression());
-        next(); // consume ")"
+        next(TokenType::PUNCTUATION); // consume ")"
     }
     else if (match(curToken, TokenType::KEYWORD, "call")) {
         curNode->append(funcCall());
@@ -43,7 +43,7 @@ AST::ASTPtr Parser::term() {
     while (match(curToken, TokenType::GENOP, "*") ||
         match(curToken, TokenType::GENOP, "/")) {
         curNode->divide.push_back(curToken.name == "/");
-        next(); // consume ("*" | "/")
+        next(TokenType::GENOP); // consume ("*" | "/")
 
         curNode->append(factor());
     }
@@ -61,7 +61,7 @@ AST::ASTPtr Parser::expression() {
     while (match(curToken, TokenType::GENOP, "+") ||
         match(curToken, TokenType::GENOP, "-")) {
         curNode->negate.push_back(curToken.name == "-");
-        next(); // consume ("+" | "-")
+        next(TokenType::GENOP); // consume ("+" | "-")
 
         curNode->append(term());
     }
@@ -83,7 +83,7 @@ std::unique_ptr<AST::Relation> Parser::relation() {
     else if (curToken.name == ">=") curNode->relType = InsType::BLT;
     else if (curToken.name == ">") curNode->relType = InsType::BLE;
     else curNode->relType = InsType::BRA;
-    next(); // consume relOp
+    next(TokenType::RELOP); // consume relOp
 
     curNode->append(expression());
 

@@ -2,32 +2,32 @@
 #include "parsing/AST/Declarations.h"
 
 AST::ASTPtr Parser::varDecl() {
-    next(); // Consume 'var'
+    next(TokenType::KEYWORD); // Consume 'var'
 
     auto curNode = std::make_unique<AST::VarDecl>();
 
     // assuming identifier ADD CHECK LATER
     curNode->variables.push_back(curToken.name);
-    next(); // consume first identifier
+    next(TokenType::IDENT); // consume first identifier
 
     while (match(curToken, TokenType::PUNCTUATION, ",")) {
-        next(); // consume ","
+        next(TokenType::PUNCTUATION); // consume ","
         curNode->variables.push_back(curToken.name);
-        next(); // consume ident
+        next(TokenType::IDENT); // consume ident
     }
 
-    next(); // consume ";"
+    next(TokenType::PUNCTUATION); // consume ";"
 
     return curNode;
 }
 
 AST::ASTPtr Parser::funcDecl() {
-    next(); // Consume 'void' or 'function'
+    next(TokenType::KEYWORD); // Consume 'void' or 'function'
     return nullptr;
 }
 
 AST::ASTPtr Parser::computation() {
-    next(); // Consume 'main'
+    next(TokenType::KEYWORD); // Consume 'main'
 
     auto curNode = std::make_unique<AST::Computation>();
 
@@ -44,12 +44,12 @@ AST::ASTPtr Parser::computation() {
 
     // "{" statSequence "}" "."
     if (match(curToken, TokenType::PUNCTUATION, "{")) {
-        next(); // Consume '{'
+        next(TokenType::PUNCTUATION); // Consume '{'
         curNode->append(statSequence());
-        next(); // Consume '}'
+        next(TokenType::PUNCTUATION); // Consume '}'
     }
 
-    next(); // Consume '.'
+    next(TokenType::PUNCTUATION); // Consume '.'
 
     return curNode;
 }
