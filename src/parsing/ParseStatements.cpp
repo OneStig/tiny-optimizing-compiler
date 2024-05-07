@@ -99,11 +99,16 @@ AST::ASTPtr Parser::statSequence() {
 
     auto curNode = std::make_unique<AST::StatSequence>();
 
-    do {
-        if (match(curToken, TokenType::PUNCTUATION, ";")) next(); // consume ";"
+    curNode->append(statement());
 
-        curNode->append(statement());
-    } while (match(curToken, TokenType::PUNCTUATION, ";"));
+    while (match(curToken, TokenType::PUNCTUATION, ";")) {
+        next(); // consume ";"
+        AST::ASTPtr isState = statement();
+
+        if (isState == nullptr) break;
+
+        curNode->append(std::move(isState));
+    }
 
     return curNode;
 }
