@@ -122,6 +122,7 @@ int AST::IfStatement::evaluate(IRBuilder &builder, int& block) {
     builder.blocks[follow].domBy = block;
     builder.blocks[join].domBy = block;
 
+    int branchCopy = branch;
     builder.blocks[block].branch = branch;
     builder.blocks[block].follow = follow;
 
@@ -144,11 +145,11 @@ int AST::IfStatement::evaluate(IRBuilder &builder, int& block) {
     builder.branches.emplace_back(follow, join);
 
     // branch instruction from block
-    if (builder.blocks[branch].instructions.empty()) {
-        builder.emit(branch, InsType::MT);
+    if (builder.blocks[branchCopy].instructions.empty()) {
+        builder.emit(branchCopy, InsType::MT);
     }
 
-    builder.emit(block, relation->relType, cmpInstr, builder.blocks[branch].instructions[0].id);
+    builder.emit(block, relation->relType, cmpInstr, builder.blocks[branchCopy].instructions[0].id);
 
     builder.blocks[branch].follow = join;
     builder.blocks[follow].branch = join;
