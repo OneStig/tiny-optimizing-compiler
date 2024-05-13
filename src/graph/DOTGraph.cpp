@@ -1,7 +1,9 @@
 #include "graph/DOTGraph.h"
 
-#include <gvc.h>
-#include <cgraph.h>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <iomanip>
 
 DOTGraph::DOTGraph(const std::vector<BasicBlock>& blocks) {
     construct = "digraph G {\n";
@@ -39,18 +41,25 @@ DOTGraph::DOTGraph(const std::vector<BasicBlock>& blocks) {
     construct += controlFlow + domination + "}";
 }
 
+std::string urlEncode(const std::string &data) {
+    std::ostringstream escaped;
+    escaped.fill('0');
+    escaped << std::hex;
+
+    for (char c : data) {
+        if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
+            escaped << c;
+            continue;
+        }
+
+        escaped << std::uppercase;
+        escaped << '%' << std::setw(2) << static_cast<int>(static_cast<unsigned char>(c));
+        escaped << std::nouppercase;
+    }
+
+    return escaped.str();
+}
+
 void DOTGraph::visualize() const {
-    GVC_t *gvc = gvContext();
-    const char* dotGraph = construct.c_str();
-
-    Agraph_t *graph = agmemread(dotGraph);
-
-    gvLayout(gvc, graph, "dot");
-    gvRenderFilename(gvc, graph, "png", "output.png");
-    gvFreeLayout(gvc, graph);
-    agclose(graph);
-    gvFreeContext(gvc);
-
-    std::string command = "open output.png";
-    system(command.c_str());
+    std::cout << "https://dreampuf.github.io/GraphvizOnline/#" << urlEncode(construct) << std::endl;
 }

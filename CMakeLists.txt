@@ -3,14 +3,6 @@ project(tiny_optimizing_compiler)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(ENV{PKG_CONFIG_PATH} "/opt/homebrew/lib/pkgconfig:/opt/homebrew/Cellar/graphviz/10.0.1/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
-
-find_package(PkgConfig REQUIRED)
-pkg_search_module(GRAPHVIZ REQUIRED libgvc libcdt libgraph)
-
-include_directories(${GRAPHVIZ_INCLUDE_DIRS})
-link_directories(${GRAPHVIZ_LIBRARY_DIRS})
-
 include_directories(include)
 file(GLOB SOURCES "src/*.cpp")
 add_executable(tiny_optimizing_compiler src/main.cpp
@@ -37,5 +29,3 @@ add_executable(tiny_optimizing_compiler src/main.cpp
         src/synthesis/Expressions.cpp
         src/synthesis/Declarations.cpp
 )
-
-target_link_libraries(tiny_optimizing_compiler ${GRAPHVIZ_LIBRARIES})
