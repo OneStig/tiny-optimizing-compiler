@@ -29,5 +29,5 @@ jobs:
     - name: Run Tiny Samples
       run: |
         for file in samples/*.tiny; do
-          ${{github.workspace}}/build/my_tiny_compiler "$file"
+          ${{github.workspace}}/build/tiny_optimizing_compiler "$file"
         done
