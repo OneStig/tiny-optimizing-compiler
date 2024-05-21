@@ -29,3 +29,18 @@ add_executable(tiny_optimizing_compiler src/main.cpp
         src/synthesis/Expressions.cpp
         src/synthesis/Declarations.cpp
 )
+
+enable_testing()
+
+file(GLOB TEST_FILES ./samples/*.tiny)
+
+foreach(TEST_FILE ${TEST_FILES})
+    get_filename_component(TEST_NAME ${TEST_FILE} NAME_WE)
+    add_test(NAME ${TEST_NAME}
+            COMMAND tiny_optimizing_compiler ${TEST_FILE})
+endforeach()
+
+foreach(TEST_FILE ${TEST_FILES})
+    get_filename_component(TEST_NAME ${TEST_FILE} NAME_WE)
+    set_tests_properties(${TEST_NAME} PROPERTIES TIMEOUT 10)
+endforeach()

@@ -4,5 +4,5 @@ var a, b, c, d; {
 	let b <- 6;
 	let c <- 3;
 	let d <- c * b + a;
-	call OutputNum(d)
+	call OutputNum(d);
 }.
