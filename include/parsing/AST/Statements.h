@@ -2,6 +2,7 @@
 #define STATEMENT_H
 
 #include <queue>
+#include <ranges>
 
 #include "ASTNode.h"
 #include "Expressions.h"

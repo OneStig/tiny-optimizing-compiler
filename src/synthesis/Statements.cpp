@@ -81,19 +81,17 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
             }
         }
 
-        if (!visited.contains(builder.blocks[curReplace].to)) {
-            visited.insert(builder.blocks[curReplace].to);
-            toReplace.push(builder.blocks[curReplace].to);
-        }
+        const int nextBlocks[] = {
+            builder.blocks[curReplace].to,
+            builder.blocks[curReplace].branch,
+            builder.blocks[curReplace].follow,
+        };
 
-        if (!visited.contains(builder.blocks[curReplace].to)) {
-            visited.insert(builder.blocks[curReplace].to);
-            toReplace.push(builder.blocks[curReplace].to);
-        }
-
-        if (!visited.contains(builder.blocks[curReplace].to)) {
-            visited.insert(builder.blocks[curReplace].to);
-            toReplace.push(builder.blocks[curReplace].to);
+        for (const int& nextCandidate : nextBlocks) {
+            if (nextCandidate != -1 && !visited.contains(nextCandidate)) {
+                visited.insert(nextCandidate);
+                toReplace.push(nextCandidate);
+            }
         }
     }
 
@@ -145,9 +143,7 @@ int AST::IfStatement::evaluate(IRBuilder &builder, int& block) {
 
     // apply phi values
 
-    for (const auto& entry : builder.blocks[block].nameTable) {
-        const std::string& varName = entry.first;
-
+    for (const std::string& varName : std::views::keys(builder.blocks[block].nameTable)) {
         if (builder.blocks[branch].nameTable[varName] ==
             builder.blocks[follow].nameTable[varName]) {
             builder.blocks[join].nameTable[varName] = builder.blocks[branch].nameTable[varName];
