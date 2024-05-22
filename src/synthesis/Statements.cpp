@@ -43,9 +43,7 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
     children[0]->evaluate(builder, body);
 
     builder.emit(head, relation->relType, cmpInstr, body);
-    builder.branches.emplace_back(head, body);
     builder.emit(body, InsType::BRA, head);
-    builder.branches.emplace_back(body, head);
 
     // figure out phi
 
@@ -60,8 +58,6 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
             instrSwap[entry1.second] = newInstr;
         }
     }
-
-    // go through and swap all negatives with instrSwap
 
     std::unordered_set<int> visited;
     std::queue<int> toReplace;
@@ -126,7 +122,6 @@ int AST::IfStatement::evaluate(IRBuilder &builder, int& block) {
     builder.blocks[block].branch = branch;
     builder.blocks[block].follow = follow;
 
-
     // copy branch and follow name tables
     builder.blocks[branch].nameTable = builder.blocks[block].nameTable;
     builder.blocks[follow].nameTable = builder.blocks[block].nameTable;
@@ -142,14 +137,9 @@ int AST::IfStatement::evaluate(IRBuilder &builder, int& block) {
     }
 
     builder.emit(follow, InsType::BRA, join);
-    builder.branches.emplace_back(follow, join);
 
     // branch instruction from block
-    if (builder.blocks[branchCopy].instructions.empty()) {
-        builder.emit(branchCopy, InsType::MT);
-    }
-
-    builder.emit(block, relation->relType, cmpInstr, builder.blocks[branchCopy].instructions[0].id);
+    builder.emit(block, relation->relType, cmpInstr, branchCopy);
 
     builder.blocks[branch].follow = join;
     builder.blocks[follow].branch = join;

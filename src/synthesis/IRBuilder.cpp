@@ -33,3 +33,26 @@ int IRBuilder::newBlock() {
     blocks.emplace_back(blockID);
     return blockID;
 }
+
+void IRBuilder::cleanUp() {
+    // first populate empty blocks with empty instruction
+    for (int i = 0; i < blocks.size(); i++) {
+        if (blocks[i].instructions.empty()) {
+            emit(i, InsType::MT);
+        }
+    }
+
+    // then replace branch block values with instruction #
+
+    // for (BasicBlock& block : blocks) {
+    //     Instruction& last = block.instructions.back();
+    //     if (last.type == InsType::BRA) {
+    //         last.x = blocks[last.x].instructions.front().id;
+    //     }
+    //     else if (last.type == InsType::BNE || last.type == InsType::BEQ ||
+    //             last.type == InsType::BLE || last.type == InsType::BLT ||
+    //             last.type == InsType::BGE || last.type == InsType::BGT) {
+    //         last.y = blocks[last.y].instructions.front().id;
+    //     }
+    // }
+}

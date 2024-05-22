@@ -27,7 +27,7 @@ DOTGraph::DOTGraph(const std::vector<BasicBlock>& blocks) {
 
         if (blocks[i].branch != -1) {
             controlFlow += "\tbb" + std::to_string(i) + ":s -> bb"
-                        + std::to_string(blocks[i].branch) + ":n [label=\"branch\"];\n";
+                        + std::to_string(blocks[i].branch) + ":n [constraint=false, color=red, label=\"branch\"];\n";
         }
 
         // domination
