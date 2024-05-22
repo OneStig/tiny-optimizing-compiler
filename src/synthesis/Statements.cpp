@@ -40,10 +40,9 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
     builder.blocks[head].follow = body;
 
     const int cmpInstr = relation->evaluate(builder, head); // compares the two things
+    builder.emit(head, relation->relType, cmpInstr, -exit);
     children[0]->evaluate(builder, body);
-
-    builder.emit(head, relation->relType, cmpInstr, body);
-    builder.emit(body, InsType::BRA, head);
+    builder.emit(body, InsType::BRA, -head);
 
     // figure out phi
 
@@ -136,10 +135,10 @@ int AST::IfStatement::evaluate(IRBuilder &builder, int& block) {
         children[1]->evaluate(builder, branch);
     }
 
-    builder.emit(follow, InsType::BRA, join);
+    builder.emit(follow, InsType::BRA, -join);
 
     // branch instruction from block
-    builder.emit(block, relation->relType, cmpInstr, branchCopy);
+    builder.emit(block, relation->relType, cmpInstr, -branchCopy);
 
     builder.blocks[branch].follow = join;
     builder.blocks[follow].branch = join;
