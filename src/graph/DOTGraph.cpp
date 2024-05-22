@@ -27,14 +27,14 @@ DOTGraph::DOTGraph(const std::vector<BasicBlock>& blocks) {
 
         if (blocks[i].branch != -1) {
             controlFlow += "\tbb" + std::to_string(i) + ":s -> bb"
-                        + std::to_string(blocks[i].branch) + ":n [constraint=false, color=red, label=\"branch\"];\n";
+                        + std::to_string(blocks[i].branch) + ":n [constraint=false, color=red, fontcolor=red label=\"branch\"];\n";
         }
 
         // domination
         if (blocks[i].domBy != -1) {
             domination += "\tbb" + std::to_string(blocks[i].domBy) +
                 ":b -> bb" + std::to_string(i) +
-                ":b [color=blue, style=dotted, label=\"dom\"]\n";
+                ":b [color=blue, fontcolor=blue, style=dotted, label=\"dom\"]\n";
         }
     }
 
