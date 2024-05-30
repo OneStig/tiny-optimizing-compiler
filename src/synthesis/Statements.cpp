@@ -45,55 +45,12 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
     builder.emit(body, InsType::BRA, -head);
 
     // figure out phi
+    // head and body may have inconsistencies to resolve
 
-    std::unordered_map<int, int> instrSwap;
+    // 1. figure out which variables in head and body are different
 
-    for (const auto& entry1 : builder.blocks[block].nameTable) {
-        const std::string& var = entry1.first;
-        int& val2 = builder.blocks[body].nameTable[var];
+    // 2. replace everything with new values
 
-        if (entry1.second != val2) {
-            const int newInstr = builder.emit(head, InsType::PHI, entry1.second, val2, true);
-            instrSwap[entry1.second] = newInstr;
-        }
-    }
-
-    std::unordered_set<int> visited;
-    std::queue<int> toReplace;
-    toReplace.push(head);
-    visited.insert(head);
-
-    while (!toReplace.empty()) {
-        const int curReplace = toReplace.front();
-        toReplace.pop();
-
-        if (curReplace == exit) {
-            continue;
-        }
-
-        for (auto& instr : builder.blocks[curReplace].instructions) {
-            if (instrSwap.contains(instr.x) && instr.id != instrSwap[instr.x]) {
-                instr.x = instrSwap[instr.x];
-            }
-
-            if (instrSwap.contains(instr.y) && instr.id != instrSwap[instr.y]) {
-                instr.y = instrSwap[instr.y];
-            }
-        }
-
-        const int nextBlocks[] = {
-            builder.blocks[curReplace].to,
-            builder.blocks[curReplace].branch,
-            builder.blocks[curReplace].follow,
-        };
-
-        for (const int& nextCandidate : nextBlocks) {
-            if (nextCandidate != -1 && !visited.contains(nextCandidate)) {
-                visited.insert(nextCandidate);
-                toReplace.push(nextCandidate);
-            }
-        }
-    }
 
     // after body is filled
     builder.blocks[exit].nameTable = builder.blocks[head].nameTable;

@@ -3,5 +3,7 @@
 - Fix graph viz
 - Allow use of undeclared variables
 
+- Functions can be called without parens if no params
+
 Questions:
 1. If no else, should we still create an empty basic block that falls-through back to the join?

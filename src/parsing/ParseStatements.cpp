@@ -30,17 +30,19 @@ AST::ASTPtr Parser::funcCall() {
     curNode->ident = curToken.name;
     next(TokenType::IDENT); // consume ident
 
-    next(TokenType::PUNCTUATION); // consume "("
+    if (match(curToken, TokenType::PUNCTUATION, "(")) {
+        next(TokenType::PUNCTUATION); // consume "("
 
-    do {
-        if (match(curToken, TokenType::PUNCTUATION, ",")) {
-            next(TokenType::PUNCTUATION); // consume ","
-        }
+        do {
+            if (match(curToken, TokenType::PUNCTUATION, ",")) {
+                next(TokenType::PUNCTUATION); // consume ","
+            }
 
-        curNode->append(expression());
-    } while (match(curToken, TokenType::PUNCTUATION, ","));
+            curNode->append(expression());
+        } while (match(curToken, TokenType::PUNCTUATION, ","));
 
-    next(TokenType::PUNCTUATION); // consume ")"
+        next(TokenType::PUNCTUATION); // consume ")"
+    }
 
     return curNode;
 }
