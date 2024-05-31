@@ -21,6 +21,8 @@ public:
     int branch{-1};
     int to{-1};
 
+    std::unordered_map<std::string, std::unordered_map<int, std::vector<int>>> useChain;
+
     explicit BasicBlock(const int num) : blockNum{num} {}
 
     [[nodiscard]] std::string toString() const {

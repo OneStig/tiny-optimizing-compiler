@@ -28,6 +28,8 @@ add_executable(tiny_optimizing_compiler src/main.cpp
         src/synthesis/Statements.cpp
         src/synthesis/Expressions.cpp
         src/synthesis/Declarations.cpp
+        src/synthesis/IfStatement.cpp
+        src/synthesis/WhileStatement.cpp
 )
 
 enable_testing()

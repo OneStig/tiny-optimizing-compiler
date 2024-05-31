@@ -9,6 +9,7 @@ DOTGraph::DOTGraph(const std::vector<BasicBlock>& blocks) {
     construct = "digraph G {\n";
     std::string controlFlow;
     std::string domination;
+    std::string comments;
 
     for (int i = 0; i < blocks.size(); i++) {
         construct += "\tbb" + std::to_string(i);
@@ -36,11 +37,16 @@ DOTGraph::DOTGraph(const std::vector<BasicBlock>& blocks) {
                 ":b -> bb" + std::to_string(i) +
                 ":b [color=blue, fontcolor=blue, style=dotted, label=\"dom\"]\n";
         }
+
+        // add comments for name table
+        comments += "==========\nBB" + std::to_string(i) + "\n----------\n";
+        for (const auto& x : blocks[i].nameTable) {
+            comments += x.first + " : " + std::to_string(x.second) + "\n";
+        }
+        comments += "\n";
     }
 
-    construct += controlFlow + domination + "}";
-
-    // add comments for
+    construct += controlFlow + domination + "}\n /*\n" + comments + "*/\n";
 }
 
 std::string urlEncode(const std::string &data) {
