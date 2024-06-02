@@ -2,8 +2,8 @@
 
 #include <stack>
 
-SSA IRBuilder::emit(const int& block, const InsType type, const SSA x, const SSA y, const bool front) {
-    const InstrSig signature{type, x.val, y.val};
+int IRBuilder::emit(const int& block, const InsType type, const int x, const int y, const bool front) {
+    const InstrSig signature{type, x, y};
 
     // check if value has been computed in cur block, or anywhere up dom tree
     if (type != InsType::READ && type != InsType::PHI && type != InsType::WRITE &&
@@ -12,7 +12,7 @@ SSA IRBuilder::emit(const int& block, const InsType type, const SSA x, const SSA
 
         while (dominated != -1) {
             if (blocks[dominated].redunInstr.contains(signature)) {
-                return SSA("", blocks[dominated].redunInstr[signature]);
+                return blocks[dominated].redunInstr[signature];
             }
 
             dominated = blocks[dominated].domBy;
@@ -28,7 +28,7 @@ SSA IRBuilder::emit(const int& block, const InsType type, const SSA x, const SSA
         blocks[block].instructions.emplace_back(id, type, x, y);
     }
     blocks[block].redunInstr[signature] = id;
-    return {"", id};
+    return id;
 }
 
 int IRBuilder::newBlock() {
@@ -52,12 +52,12 @@ void IRBuilder::cleanUp() {
         Instruction& last = block.instructions.back();
 
         if (last.type == InsType::BRA) {
-            last.x.val = blocks[-last.x.val].instructions.front().id;
+            last.x = blocks[-last.x].instructions.front().id;
         }
         else if (last.type == InsType::BNE || last.type == InsType::BEQ ||
                 last.type == InsType::BLE || last.type == InsType::BLT ||
                 last.type == InsType::BGE || last.type == InsType::BGT) {
-            last.y.val = blocks[-last.y.val].instructions.front().id;
+            last.y = blocks[-last.y].instructions.front().id;
         }
     }
 

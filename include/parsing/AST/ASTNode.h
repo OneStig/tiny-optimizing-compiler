@@ -2,7 +2,6 @@
 #define ASTNODE_H
 
 #include <vector>
-#include <string>
 #include <memory>
 #include "../../synthesis/IRBuilder.h"
 
@@ -21,7 +20,7 @@ namespace AST {
             children.push_back(std::move(node));
         }
 
-        virtual SSA evaluate(IRBuilder& builder, int& block) = 0;
+        virtual int evaluate(IRBuilder& builder, int& block) = 0;
     };
 
 

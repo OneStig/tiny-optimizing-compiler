@@ -1,6 +1,6 @@
 #include "parsing/AST/Declarations.h"
 
-SSA AST::Computation::evaluate(IRBuilder &builder, int& block) {
+int AST::Computation::evaluate(IRBuilder &builder, int& block) {
     int computationBlock = builder.newBlock();
     builder.blocks[block].to = computationBlock;
 
@@ -8,13 +8,13 @@ SSA AST::Computation::evaluate(IRBuilder &builder, int& block) {
         child->evaluate(builder, computationBlock);
     }
 
-    return NULL_SSA;
+    return 0;
 }
 
-SSA AST::VarDecl::evaluate(IRBuilder &builder, int& block) {
+int AST::VarDecl::evaluate(IRBuilder &builder, int& block) {
     // Do something later to check for undeclared variables
     for (std::string& var : variables) {
         builder.blocks[block].nameTable[var] = 0;
     }
-    return NULL_SSA;
+    return 0;
 }

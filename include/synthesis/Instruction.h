@@ -57,33 +57,24 @@ namespace std {
     };
 }
 
-struct SSA {
-    std::string src;
-    int val;
-
-    SSA(const std::string src, const int val) : src{src}, val{val} {}
-};
-
-const SSA NULL_SSA = {"", 0};
-
 struct Instruction {
     int id;
     InsType type;
-    SSA x;
-    SSA y;
+    int x;
+    int y;
 
     // reserve 0 for no instruction
-    explicit Instruction(const int id, const InsType type, const SSA x = {"", 0}, const SSA y = {"", 0})
+    explicit Instruction(const int id, const InsType type, const int x = 0, const int y = 0)
         : id{id}, type{type}, x{x}, y{y} {}
 
     [[nodiscard]] std::string toString() const {
         if (type == InsType::CONST) {
-            return std::to_string(id) + ": const #" + std::to_string(x.val);
+            return std::to_string(id) + ": const #" + std::to_string(x);
         }
 
         return std::to_string(id) + ": " + insTypeToString(type)
-            + (x.val ? " (" + std::to_string(x.val) + ")" : "")
-            + (y.val ? " (" + std::to_string(y.val) + ")" : "");
+            + (x ? " (" + std::to_string(x) + ")" : "")
+            + (y ? " (" + std::to_string(y) + ")" : "");
     }
 
 private:

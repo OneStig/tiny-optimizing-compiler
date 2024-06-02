@@ -1,13 +1,13 @@
 #include "parsing/AST/Statements.h"
 
-SSA AST::Assignment::evaluate(IRBuilder& builder, int& block) {
-    const SSA tmp = children[0]->evaluate(builder, block);
-    builder.blocks[block].nameTable[ident] = tmp.val;
+int AST::Assignment::evaluate(IRBuilder& builder, int& block) {
+    const int tmp = children[0]->evaluate(builder, block);
+    builder.blocks[block].nameTable[ident] = tmp;
 
-    return NULL_SSA;
+    return 0;
 }
 
-SSA AST::FuncCall::evaluate(IRBuilder& builder, int& block)  {
+int AST::FuncCall::evaluate(IRBuilder& builder, int& block)  {
     // Predefined functions
     if (ident == "InputNum") return builder.emit(block, InsType::READ);
     if (ident == "OutputNum") return builder.emit(block, InsType::WRITE,
@@ -16,13 +16,13 @@ SSA AST::FuncCall::evaluate(IRBuilder& builder, int& block)  {
 
     // TODO: Add custom user functions
 
-    return NULL_SSA;
+    return 0;
 }
 
-SSA AST::StatSequence::evaluate(IRBuilder &builder, int &block) {
+int AST::StatSequence::evaluate(IRBuilder &builder, int &block) {
     for (const ASTPtr &child: children) {
         child->evaluate(builder, block);
     }
 
-    return NULL_SSA;
+    return 0;
 }

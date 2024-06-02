@@ -14,7 +14,7 @@ public:
         newBlock();
     }
 
-    SSA emit(const int& block, InsType type, SSA x = NULL_SSA, SSA y = NULL_SSA, bool front = false);
+    int emit(const int& block, InsType type, int x = 0, int y = 0, bool front = false);
     int newBlock();
 
     void cleanUp();
