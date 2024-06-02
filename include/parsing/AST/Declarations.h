@@ -10,7 +10,7 @@ class Computation : public ASTNode {
 public:
     Computation() = default;
 
-    int evaluate(IRBuilder &builder, int& block) override;
+    SSA evaluate(IRBuilder &builder, int& block) override;
 };
 
 class VarDecl : public ASTNode {
@@ -18,7 +18,7 @@ public:
     VarDecl() = default;
     std::vector<std::string> variables;
 
-    int evaluate(IRBuilder &builder, int& block) override;
+    SSA evaluate(IRBuilder &builder, int& block) override;
 };
 
 } // AST

@@ -13,7 +13,8 @@ class StatSequence : public ASTNode {
 public:
     StatSequence() = default;
 
-    int evaluate(IRBuilder &builder, int &block) override;
+
+    SSA evaluate(IRBuilder &builder, int &block) override;
 };
 
 class Statement : public ASTNode {
@@ -26,7 +27,7 @@ public:
     std::string ident;
     Assignment() = default;
 
-    int evaluate(IRBuilder& builder, int& block) override;
+    SSA evaluate(IRBuilder& builder, int& block) override;
 };
 
 class FuncCall : public Statement { // children represent parameters
@@ -34,7 +35,7 @@ public:
     std::string ident;
     FuncCall() = default;
 
-    int evaluate(IRBuilder& builder, int& block) override;
+    SSA evaluate(IRBuilder& builder, int& block) override;
 };
 
 class IfStatement : public Statement {
@@ -42,7 +43,7 @@ public:
     IfStatement() = default;
     std::unique_ptr<Relation> relation;
 
-    int evaluate(IRBuilder &builder, int& block) override;
+    SSA evaluate(IRBuilder &builder, int& block) override;
 };
 
 class WhileStatement : public Statement {
@@ -50,7 +51,7 @@ public:
     WhileStatement() = default;
     std::unique_ptr<Relation> relation;
 
-    int evaluate(IRBuilder &builder, int& block) override;
+    SSA evaluate(IRBuilder &builder, int& block) override;
 };
 
 }

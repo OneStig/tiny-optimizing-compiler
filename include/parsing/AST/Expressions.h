@@ -10,7 +10,7 @@ namespace AST {
         Expression() = default;
         std::vector<bool> negate; // starting after first child
 
-        int evaluate(IRBuilder& builder, int& block) override;
+        SSA evaluate(IRBuilder& builder, int& block) override;
     };
 
     class Term : public ASTNode {
@@ -18,14 +18,14 @@ namespace AST {
         Term() = default;
         std::vector<bool> divide; // starting after first child
 
-        int evaluate(IRBuilder& builder, int& block) override;
+        SSA evaluate(IRBuilder& builder, int& block) override;
     };
 
     class Factor : public ASTNode {
     public:
         Factor() = default;
 
-        int evaluate(IRBuilder& builder, int& block) override;
+        SSA evaluate(IRBuilder& builder, int& block) override;
     };
 
     class Identifier : public ASTNode {
@@ -33,7 +33,7 @@ namespace AST {
         Identifier() = default;
         std::string name;
 
-        int evaluate(IRBuilder& builder, int& block) override;
+        SSA evaluate(IRBuilder& builder, int& block) override;
     };
 
     class Number : public ASTNode {
@@ -41,7 +41,7 @@ namespace AST {
         Number() = default;
         int value{};
 
-        int evaluate(IRBuilder &builder, int& block) override;
+        SSA evaluate(IRBuilder &builder, int& block) override;
     };
 
     class Relation : public ASTNode {
@@ -49,7 +49,7 @@ namespace AST {
         Relation() = default;
         InsType relType;
 
-        int evaluate(IRBuilder &builder, int& block) override;
+        SSA evaluate(IRBuilder &builder, int& block) override;
     };
 }
 

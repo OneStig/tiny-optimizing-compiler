@@ -1,6 +1,6 @@
 #include "parsing/AST/Statements.h"
 
-int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
+SSA AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
     int head = builder.newBlock();
     int body = builder.newBlock();
     int exit = builder.newBlock();
@@ -20,10 +20,10 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
 
     builder.blocks[head].follow = body;
 
-    const int cmpInstr = relation->evaluate(builder, head); // compares the two things
-    builder.emit(head, relation->relType, cmpInstr, -exit);
+    const SSA cmpInstr = relation->evaluate(builder, head); // compares the two things
+    builder.emit(head, relation->relType, cmpInstr, {"", -exit});
     children[0]->evaluate(builder, body);
-    builder.emit(body, InsType::BRA, -head);
+    builder.emit(body, InsType::BRA, {"", -head});
 
     // figure out phi
     // head and body may have inconsistencies to resolve
@@ -50,5 +50,5 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
 
     block = exit;
 
-    return 0;
+    return NULL_SSA;
 }
