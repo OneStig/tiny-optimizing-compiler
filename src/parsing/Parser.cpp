@@ -24,11 +24,15 @@ AST::ASTPtr Parser::varDecl() {
 AST::ASTPtr Parser::funcDecl() {
     next(TokenType::KEYWORD); // Consume 'void' or 'function'
 
+    auto curNode = std::make_unique<AST::FuncDecl>();
+    curNode->isVoid = false;
+    isVoid = false;
+
     if (match(curToken, TokenType::KEYWORD, "function")) {
         next(TokenType::KEYWORD); // consume 'function'
+        curNode->isVoid = true;
+        isVoid = true;
     }
-
-    auto curNode = std::make_unique<AST::FuncDecl>();
 
     curNode->name = curToken.name;
     next(TokenType::IDENT); // consume ident
@@ -65,6 +69,8 @@ AST::ASTPtr Parser::funcDecl() {
     }
     next(TokenType::PUNCTUATION); // Consume '}'
     next(TokenType::PUNCTUATION); // Consume ;
+
+    isVoid = true;
 
     return curNode;
 }

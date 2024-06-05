@@ -24,6 +24,7 @@ public:
 class FuncDecl : public ASTNode {
 public:
     FuncDecl() = default;
+    bool isVoid;
     std::string name;
     std::vector<std::string> parameters;
 

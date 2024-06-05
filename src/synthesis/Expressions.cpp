@@ -39,7 +39,6 @@ int AST::Identifier::evaluate(IRBuilder& builder, int& block) {
         varSSA = builder.emit(0, InsType::CONST, 0);
         std::cout << "Warning, variable '" << name << "' used before initializing. "
                                                       "It has been initialied to 0 by default.\n";
-
     }
 
     return builder.blocks[block].nameTable[name];

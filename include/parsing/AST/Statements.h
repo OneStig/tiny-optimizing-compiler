@@ -53,6 +53,13 @@ public:
     int evaluate(IRBuilder &builder, int& block) override;
 };
 
+class ReturnStatement : public Statement {
+public:
+    ReturnStatement() = default;
+
+    int evaluate(IRBuilder &builder, int& block) override;
+};
+
 }
 
 #endif //STATEMENT_H

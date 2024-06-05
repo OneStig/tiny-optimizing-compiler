@@ -79,8 +79,14 @@ AST::ASTPtr Parser::whileStatement() {
 }
 
 AST::ASTPtr Parser::returnStatement() {
-    // unimplemented
-    return nullptr;
+    auto curNode = std::make_unique<AST::ReturnStatement>();
+    next(TokenType::KEYWORD); // consume "return"
+
+    if (!isVoid) {
+        curNode->append(expression());
+    }
+
+    return curNode;
 }
 
 AST::ASTPtr Parser::statement() {

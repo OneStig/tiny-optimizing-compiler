@@ -26,3 +26,9 @@ int AST::StatSequence::evaluate(IRBuilder &builder, int &block) {
 
     return 0;
 }
+
+int AST::ReturnStatement::evaluate(IRBuilder &builder, int &block) {
+    // emit something interesting
+
+    return 0;
+}

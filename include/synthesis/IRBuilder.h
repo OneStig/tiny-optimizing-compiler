@@ -13,6 +13,7 @@ public:
 
     int instructionNum{};
     int constantNum{INT_MAX};
+    bool isVoid;
 
     IRBuilder() {
         // Constants block

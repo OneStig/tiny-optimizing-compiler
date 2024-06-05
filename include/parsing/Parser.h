@@ -11,6 +11,8 @@ private:
     Lexer& lx;
     Token curToken;
 
+    bool isVoid;
+
     AST::ASTPtr factor();
     AST::ASTPtr term();
     AST::ASTPtr expression();
@@ -29,8 +31,6 @@ private:
 
     AST::ASTPtr varDecl();
     AST::ASTPtr funcDecl();
-    AST::ASTPtr formalParam();
-    AST::ASTPtr funcBody();
     AST::ASTPtr computation();
 
     void next(const TokenType& expected) {
@@ -41,7 +41,7 @@ private:
         }
 
         curToken = lx.nextToken();
-        // std::cout << "Advance Token to: " << curToken.toString() << std::endl;
+        std::cout << "Advance Token to: " << curToken.toString() << std::endl;
     }
 
     static bool match(const Token& token, const TokenType type, const std::string& name = "") {
