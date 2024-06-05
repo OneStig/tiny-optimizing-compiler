@@ -20,7 +20,15 @@ int IRBuilder::emit(const int& block, const InsType type, const int x, const int
     }
 
     // if instruction is not redundant, create new instruction and put it in table
-    int id = nextInstr();
+    int id;
+
+    if (type == InsType::CONST) {
+        id = nextConst();
+    }
+    else {
+        id = nextInstr();
+    }
+
     if (front) {
         blocks[block].instructions.emplace_front(id, type, x, y);
     }

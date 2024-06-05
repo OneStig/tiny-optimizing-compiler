@@ -37,7 +37,7 @@ enable_testing()
 file(GLOB TEST_FILES ./samples/*.tiny)
 
 # Glob files from the public repo
-file(GLOB PUBLIC_FILES ./public-samples/*.tiny ./public-samples/*.tny ./public-samples/*.ty)
+file(GLOB PUBLIC_FILES ./public-samples/*.tiny ./public-samples/*.tny ./public-samples/*.ty ./public-samples/*.txt)
 list(APPEND TEST_FILES ${PUBLIC_FILES})
 
 foreach(TEST_FILE ${TEST_FILES})

@@ -8,6 +8,8 @@
 class IRBuilder {
 public:
     std::vector<BasicBlock> blocks;
+    int instructionNum{};
+    int constantNum{INT_MAX};
 
     IRBuilder() {
         // Constants block
@@ -20,10 +22,12 @@ public:
     void cleanUp();
 
 private:
-    int instructionNum{};
-
     int nextInstr() {
         return ++instructionNum;
+    }
+
+    int nextConst() {
+        return --constantNum;
     }
 };
 
