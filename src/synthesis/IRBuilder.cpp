@@ -125,10 +125,16 @@ void IRBuilder::cleanUp() {
     // then let's go through and re-number all instructions
     int nextID{1};
 
-    std::queue<int> toRenum;
+    std::stack<int> toRenum;
     std::unordered_set<int> visitedBlocks;
 
     std::unordered_map<int, int> renumberings;
+
+    for (const auto& [_, fblock] : functionMap) {
+        toRenum.push(fblock);
+        visitedBlocks.insert(fblock);
+    }
+
     toRenum.push(0);
     visitedBlocks.insert(0);
 
@@ -143,7 +149,7 @@ void IRBuilder::cleanUp() {
     };
 
     while (!toRenum.empty()) {
-        const int block = toRenum.front();
+        const int block = toRenum.top();
         toRenum.pop();
 
         const int trypush[] = {
