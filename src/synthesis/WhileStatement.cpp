@@ -74,7 +74,7 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
     // 3. generate necessary phi functions
 
     for (std::string& var : diffVars) {
-        const int phi = builder.emit(head, InsType::PHI, builder.blocks[head].nameTable[var], -1);
+        const int phi = builder.emit(head, InsType::PHI, builder.blocks[head].nameTable[var]);
         builder.blocks[head].nameTable[var] = phi;
     }
 
@@ -86,6 +86,14 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
     builder.emit(head, relation->relType, cmpInstr, -exit);
     children[0]->evaluate(builder, body);
     builder.emit(body, InsType::BRA, -head);
+
+    // 5. fix right side of the phi values
+
+    auto it = builder.blocks[head].instructions.begin();
+    for (std::string& var : diffVars) {
+        it->y = builder.blocks[body].nameTable[var];
+        ++it;
+    }
 
     // after body is filled
     builder.blocks[exit].nameTable = builder.blocks[head].nameTable;
