@@ -2,6 +2,7 @@
 #define IRBUILDER_H
 
 #include <vector>
+#include <climits>
 
 #include "BasicBlock.h"
 
