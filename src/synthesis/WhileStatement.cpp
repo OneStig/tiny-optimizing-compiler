@@ -38,7 +38,9 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
     std::vector<std::string> diffVars;
 
     for (auto& [var, ssa] : builder.blocks[head].nameTable) {
-        if (ssa == 0) continue; // ignore uninitialized variables for now
+        if (ssa == 0) {
+            ssa = builder.emit(0, InsType::CONST, 0);
+        }
 
         if (builder.blocks[body].nameTable[var] != ssa) {
             diffVars.push_back(var);

@@ -1,7 +1,7 @@
 #ifndef BASICBLOCK_H
 #define BASICBLOCK_H
 
-#include <deque>
+#include <list>
 #include <string>
 #include <unordered_set>
 #include <unordered_map>
@@ -10,7 +10,7 @@
 
 class BasicBlock {
 public:
-    std::deque<Instruction> instructions;
+    std::list<Instruction> instructions;
     std::unordered_map<std::string, int> nameTable;
 
     std::unordered_map<InstrSig, int> redunInstr;

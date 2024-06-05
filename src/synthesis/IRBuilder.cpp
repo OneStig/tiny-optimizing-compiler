@@ -1,6 +1,7 @@
 #include "../../include/synthesis/IRBuilder.h"
 
 #include <queue>
+#include <stack>
 
 int IRBuilder::emit(const int& block, const InsType type, const int x, const int y, const bool front) {
     const InstrSig signature{type, x, y};
@@ -18,6 +19,11 @@ int IRBuilder::emit(const int& block, const InsType type, const int x, const int
             dominated = blocks[dominated].domBy;
         }
     }
+    // else if (type == InsType::PHI) {
+    //     if (blocks[block].redunInstr.contains(signature)) {
+    //         return blocks[block].redunInstr[signature];
+    //     }
+    // }
 
     // if instruction is not redundant, create new instruction and put it in table
     int id;
@@ -46,6 +52,53 @@ int IRBuilder::newBlock() {
 }
 
 void IRBuilder::cleanUp() {
+    // first perform dead code elimination
+    // std::vector<int> degree(blocks.size());
+    //
+    // for (const BasicBlock& block : blocks) {
+    //     degree[block.domBy]++;
+    // }
+    //
+    // std::stack<int> toVisit;
+    //
+    // for (int i = 0; i < degree.size(); i++) {
+    //     if (degree[i] == 0) {
+    //         toVisit.push(i);
+    //     }
+    // }
+    //
+    // const std::unordered_set<InsType> canElim = {
+    //     InsType::CONST, InsType::ADD, InsType::SUB, InsType::MUL, InsType::DIV,
+    //     InsType::PHI
+    // };
+    // std::unordered_set<int> seenInstr;
+    //
+    // while (!toVisit.empty()) {
+    //     int curBlock = toVisit.top();
+    //     std::list<Instruction>& curInstructions = blocks[curBlock].instructions;
+    //     toVisit.pop();
+    //
+    //     for (auto it = curInstructions.rbegin(); it != curInstructions.rend();) {
+    //         if (canElim.contains(it->type) && !seenInstr.contains(it->id)) {
+    //             auto toDelete = it;
+    //             ++it;
+    //             curInstructions.erase(toDelete.base());
+    //         }
+    //         else {
+    //             if (it->type != InsType::CONST) {
+    //                 seenInstr.insert(it->x);
+    //                 seenInstr.insert(it->y);
+    //             }
+    //
+    //             ++it;
+    //         }
+    //     }
+    //
+    //     if (--degree[blocks[curBlock].domBy] == 0) {
+    //         toVisit.push(blocks[curBlock].domBy);
+    //     }
+    // }
+
     // first populate empty blocks with empty instruction
     for (int i = 0; i < blocks.size(); i++) {
         if (blocks[i].instructions.empty()) {

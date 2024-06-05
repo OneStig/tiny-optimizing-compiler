@@ -23,7 +23,50 @@ AST::ASTPtr Parser::varDecl() {
 
 AST::ASTPtr Parser::funcDecl() {
     next(TokenType::KEYWORD); // Consume 'void' or 'function'
-    return nullptr;
+
+    if (match(curToken, TokenType::KEYWORD, "function")) {
+        next(TokenType::KEYWORD); // consume 'function'
+    }
+
+    auto curNode = std::make_unique<AST::FuncDecl>();
+
+    curNode->name = curToken.name;
+    next(TokenType::IDENT); // consume ident
+
+    // formalParam
+    next(TokenType::PUNCTUATION); // consume (
+
+    if (!match(curToken, TokenType::PUNCTUATION, ")")) {
+        curNode->parameters.push_back(curToken.name);
+        next(TokenType::IDENT);
+
+        while (match(curToken, TokenType::PUNCTUATION, ",")) {
+            next(TokenType::PUNCTUATION);
+            curNode->parameters.push_back(curToken.name);
+            next(TokenType::IDENT);
+        }
+    }
+
+    next(TokenType::PUNCTUATION); // consume )
+    next(TokenType::PUNCTUATION); // consume ;
+
+    // funcBody
+
+    if (match(curToken, TokenType::KEYWORD, "var")) {
+        curNode->append(varDecl());
+    }
+
+    // "{" statSequence "}" "."
+    next(TokenType::PUNCTUATION); // Consume '{'
+    if (curToken.type == TokenType::KEYWORD &&
+        (curToken.name == "let" || curToken.name == "call" || curToken.name == "if" ||
+            curToken.name == "while" || curToken.name == "return")) {
+        curNode->append(statSequence());
+    }
+    next(TokenType::PUNCTUATION); // Consume '}'
+    next(TokenType::PUNCTUATION); // Consume ;
+
+    return curNode;
 }
 
 AST::ASTPtr Parser::computation() {

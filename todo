@@ -1,9 +1,1 @@
-- Replace instances of next() with some expect() advance
-- Finish full parsing
-- Fix graph viz
-- Allow use of undeclared variables
-
-- Functions can be called without parens if no params
-
-Questions:
-1. If no else, should we still create an empty basic block that falls-through back to the join?
+- What about cases where 2 variables have identical phi functions

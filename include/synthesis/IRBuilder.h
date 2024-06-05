@@ -9,6 +9,8 @@
 class IRBuilder {
 public:
     std::vector<BasicBlock> blocks;
+    std::unordered_map<std::string, int> functionMap;
+
     int instructionNum{};
     int constantNum{INT_MAX};
 

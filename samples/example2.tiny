@@ -3,7 +3,8 @@ var x, y, i, j;
 {
     let i <- call InputNum();
     let x <- 0;
-    let y <- i;
+    let y <- 0;
+    let j <- i;
     while x < 10 do
         let x <- i + 1;
         let y <- j + 1;

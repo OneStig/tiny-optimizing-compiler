@@ -21,6 +21,14 @@ public:
     int evaluate(IRBuilder &builder, int& block) override;
 };
 
+class FuncDecl : public ASTNode {
+public:
+    FuncDecl() = default;
+    std::string name;
+    std::vector<std::string> parameters;
+
+    int evaluate(IRBuilder &builder, int& block) override;
+};
 } // AST
 
 #endif //COMPUTATION_H

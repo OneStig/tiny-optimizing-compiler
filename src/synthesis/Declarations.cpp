@@ -18,3 +18,15 @@ int AST::VarDecl::evaluate(IRBuilder &builder, int& block) {
     }
     return 0;
 }
+
+int AST::FuncDecl::evaluate(IRBuilder &builder, int& block) {
+    int functionBlock = builder.newBlock();
+
+    builder.functionMap[name] = functionBlock;
+
+    for (const ASTPtr &child: children) {
+        child->evaluate(builder, functionBlock);
+    }
+
+    return 0;
+}
