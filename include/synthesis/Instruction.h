@@ -11,6 +11,7 @@ enum class InsType {
     ADD, SUB, MUL, DIV, CMP,
     PHI,
     BRA, BNE, BEQ, BLE, BLT, BGE, BGT,
+    JSR, RET, GETPAR, SETPAR,
     MT,
 };
 
@@ -71,6 +72,11 @@ struct Instruction {
         if (type == InsType::CONST) {
             return std::to_string(id) + ": const #" + std::to_string(x);
         }
+        if (type == InsType::SETPAR || type == InsType::GETPAR) {
+            return std::to_string(id) + ": " + insTypeToString(type)
+                + std::to_string(x)
+                + " " + (y ? " (" + std::to_string(y) + ")" : "");
+        }
 
         return std::to_string(id) + ": " + insTypeToString(type)
             + (x ? " (" + std::to_string(x) + ")" : "")
@@ -97,6 +103,10 @@ private:
             case InsType::BLT: return "blt";
             case InsType::BGE: return "bge";
             case InsType::BGT: return "bgt";
+            case InsType::JSR: return "jsr";
+            case InsType::RET: return "ret";
+            case InsType::GETPAR: return "getpar";
+            case InsType::SETPAR: return "setpar";
             case InsType::MT: return "\\<empty\\>";
             default: return "UNKNOWN_INS";
         }

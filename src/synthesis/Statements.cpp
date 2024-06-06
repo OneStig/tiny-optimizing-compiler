@@ -15,6 +15,19 @@ int AST::FuncCall::evaluate(IRBuilder& builder, int& block)  {
     if (ident == "OutputNewLine") return builder.emit(block, InsType::WRITENL);
 
     // TODO: Add custom user functions
+    if (builder.functionMap.contains(ident)) {
+        std::vector<int> params(children.size());
+
+        for (int i = 0; i < children.size(); i++) {
+            params[i] = children[i]->evaluate(builder, block);
+        }
+
+        for (int i = 0; i < params.size(); i++) {
+            builder.emit(block, InsType::SETPAR, i + 1, params[i]);
+        }
+
+        builder.emit(block, InsType::JSR, -builder.functionMap[ident]);
+    }
 
     return 0;
 }

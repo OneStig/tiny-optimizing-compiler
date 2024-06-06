@@ -8,7 +8,8 @@ int IRBuilder::emit(const int& block, const InsType type, const int x, const int
 
     // check if value has been computed in cur block, or anywhere up dom tree
     if (type != InsType::READ && type != InsType::PHI && type != InsType::WRITE &&
-        type != InsType::MT) {
+        type != InsType::MT && type != InsType::RET && type != InsType::JSR &&
+        type != InsType::SETPAR && type != InsType::GETPAR) {
         int dominated = block;
 
         while (dominated != -1) {
@@ -112,7 +113,7 @@ void IRBuilder::cleanUp() {
     for (BasicBlock& block : blocks) {
         Instruction& last = block.instructions.back();
 
-        if (last.type == InsType::BRA) {
+        if (last.type == InsType::BRA || last.type == InsType::JSR) {
             last.x = blocks[-last.x].instructions.front().id;
         }
         else if (last.type == InsType::BNE || last.type == InsType::BEQ ||
