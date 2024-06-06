@@ -177,7 +177,9 @@ void IRBuilder::cleanUp() {
         for (Instruction& ins : block.instructions) {
             if (ins.type != InsType::MT && ins.type != InsType::CONST &&
                 ins.type != InsType::READ && ins.type != InsType::WRITENL) {
-                renum(ins.x);
+                if (ins.type != InsType::SETPAR && ins.type != InsType::GETPAR) {
+                    renum(ins.x);
+                }
                 renum(ins.y);
             }
         }

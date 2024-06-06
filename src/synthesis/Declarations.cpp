@@ -27,6 +27,10 @@ int AST::FuncDecl::evaluate(IRBuilder &builder, int& block) {
     builder.isVoid = isVoid;
     builder.functionMap[name] = functionBlock;
 
+    for (int i = 0; i < parameters.size(); i++) {
+        builder.blocks[functionBlock].nameTable[parameters[i]] = builder.emit(functionBlock, InsType::GETPAR, i + 1);
+    }
+
     for (const ASTPtr &child: children) {
         child->evaluate(builder, functionBlock);
     }

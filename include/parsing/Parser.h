@@ -41,7 +41,7 @@ private:
         }
 
         curToken = lx.nextToken();
-        std::cout << "Advance Token to: " << curToken.toString() << std::endl;
+        // std::cout << "Advance Token to: " << curToken.toString() << std::endl;
     }
 
     static bool match(const Token& token, const TokenType type, const std::string& name = "") {

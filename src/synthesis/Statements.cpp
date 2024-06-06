@@ -26,7 +26,7 @@ int AST::FuncCall::evaluate(IRBuilder& builder, int& block)  {
             builder.emit(block, InsType::SETPAR, i + 1, params[i]);
         }
 
-        builder.emit(block, InsType::JSR, -builder.functionMap[ident]);
+        return builder.emit(block, InsType::JSR, -builder.functionMap[ident]);
     }
 
     return 0;
@@ -41,7 +41,11 @@ int AST::StatSequence::evaluate(IRBuilder &builder, int &block) {
 }
 
 int AST::ReturnStatement::evaluate(IRBuilder &builder, int &block) {
-    // emit something interesting
-
+    if (children.empty()) {
+        builder.emit(block, InsType::RET);
+    }
+    else {
+        builder.emit(block, InsType::RET, children[0]->evaluate(builder, block));
+    }
     return 0;
 }
