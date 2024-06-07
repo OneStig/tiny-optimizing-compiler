@@ -52,7 +52,7 @@ int IRBuilder::newBlock() {
     return blockID;
 }
 
-void IRBuilder::cleanUp() {
+void IRBuilder::cleanUp(bool branchNum, bool renumInstr) {
 
     // first populate empty blocks with empty instruction
     for (int i = 0; i < blocks.size(); i++) {
@@ -64,78 +64,82 @@ void IRBuilder::cleanUp() {
     // then replace branch block values with instruction #
     // branch numbers are stored as negative numbers
 
-    for (BasicBlock& block : blocks) {
-        for (Instruction& last : block.instructions) {
-            if (last.type == InsType::BRA || last.type == InsType::JSR) {
-                last.x = blocks[-last.x].instructions.front().id;
-            }
-            else if (last.type == InsType::BNE || last.type == InsType::BEQ ||
-                    last.type == InsType::BLE || last.type == InsType::BLT ||
-                    last.type == InsType::BGE || last.type == InsType::BGT) {
-                last.y = blocks[-last.y].instructions.front().id;
+    if (branchNum) {
+        for (BasicBlock& block : blocks) {
+            for (Instruction& last : block.instructions) {
+                if (last.type == InsType::BRA || last.type == InsType::JSR) {
+                    last.x = blocks[-last.x].instructions.front().id;
+                }
+                else if (last.type == InsType::BNE || last.type == InsType::BEQ ||
+                        last.type == InsType::BLE || last.type == InsType::BLT ||
+                        last.type == InsType::BGE || last.type == InsType::BGT) {
+                    last.y = blocks[-last.y].instructions.front().id;
+                }
             }
         }
     }
 
     // then let's go through and re-number all instructions
 
-    int nextID{1};
+    if (renumInstr) {
+        int nextID{1};
 
-    std::stack<int> toRenum;
-    std::unordered_set<int> visitedBlocks;
+        std::stack<int> toRenum;
+        std::unordered_set<int> visitedBlocks;
 
-    std::unordered_map<int, int> renumberings;
+        std::unordered_map<int, int> renumberings;
 
-    for (const auto& [_, fblock] : functionMap) {
-        toRenum.push(fblock);
-        visitedBlocks.insert(fblock);
-    }
-
-    toRenum.push(0);
-    visitedBlocks.insert(0);
-
-    auto renum = [&renumberings, &nextID](int& id) -> void {
-        if (id == 0) return;
-
-        if (!renumberings.contains(id)) {
-            renumberings[id] = nextID++;
+        for (const auto& [_, fblock] : functionMap) {
+            toRenum.push(fblock);
+            visitedBlocks.insert(fblock);
         }
 
-        id = renumberings[id];
-    };
+        toRenum.push(0);
+        visitedBlocks.insert(0);
 
-    while (!toRenum.empty()) {
-        const int block = toRenum.top();
-        toRenum.pop();
+        auto renum = [&renumberings, &nextID](int& id) -> void {
+            if (id == 0) return;
 
-        const int trypush[] = {
-            blocks[block].branch,
-            blocks[block].follow,
-            blocks[block].to
+            if (!renumberings.contains(id)) {
+                renumberings[id] = nextID++;
+            }
+
+            id = renumberings[id];
         };
 
-        for (const int& nxt : trypush) {
-            if (nxt != -1 && !visitedBlocks.contains(nxt)) {
-                toRenum.push(nxt);
-                visitedBlocks.insert(nxt);
+        while (!toRenum.empty()) {
+            const int block = toRenum.top();
+            toRenum.pop();
+
+            const int trypush[] = {
+                blocks[block].branch,
+                blocks[block].follow,
+                blocks[block].to
+            };
+
+            for (const int& nxt : trypush) {
+                if (nxt != -1 && !visitedBlocks.contains(nxt)) {
+                    toRenum.push(nxt);
+                    visitedBlocks.insert(nxt);
+                }
+            }
+
+            for (Instruction& ins : blocks[block].instructions) {
+                renum(ins.id);
             }
         }
 
-        for (Instruction& ins : blocks[block].instructions) {
-            renum(ins.id);
-        }
-    }
+        // second renumbering pass
 
-    // second renumbering pass
-
-    for (BasicBlock& block : blocks) {
-        for (Instruction& ins : block.instructions) {
-            if (ins.type != InsType::MT && ins.type != InsType::CONST &&
-                ins.type != InsType::READ && ins.type != InsType::WRITENL) {
-                if (ins.type != InsType::SETPAR && ins.type != InsType::GETPAR) {
-                    renum(ins.x);
+        for (BasicBlock& block : blocks) {
+            for (Instruction& ins : block.instructions) {
+                if (ins.type != InsType::MT && ins.type != InsType::CONST &&
+                    ins.type != InsType::READ && ins.type != InsType::WRITENL) {
+                    if (ins.type != InsType::SETPAR && ins.type != InsType::GETPAR) {
+                        renum(ins.x);
+                    }
+                    renum(ins.y);
                 }
-                renum(ins.y);
             }
         }
     }

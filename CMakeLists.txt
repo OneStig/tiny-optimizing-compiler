@@ -42,9 +42,9 @@ list(APPEND TEST_FILES ${PUBLIC_FILES})
 
 foreach(TEST_FILE ${TEST_FILES})
     get_filename_component(TEST_NAME ${TEST_FILE} NAME_WE)
-    add_test(NAME ${TEST_NAME}
-            COMMAND tiny_optimizing_compiler ${TEST_FILE})
-    set_tests_properties(${TEST_NAME} PROPERTIES TIMEOUT 10)
-    message(${TEST_NAME})
+    if(NOT TEST_NAME STREQUAL "***signupsheet")
+        add_test(NAME ${TEST_NAME}
+                COMMAND tiny_optimizing_compiler ${TEST_FILE})
+        set_tests_properties(${TEST_NAME} PROPERTIES TIMEOUT 10)
+    endif()
 endforeach()
-

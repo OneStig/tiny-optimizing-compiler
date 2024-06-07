@@ -23,7 +23,7 @@ public:
     int emit(const int& block, InsType type, int x = 0, int y = 0, bool front = false);
     int newBlock();
 
-    void cleanUp();
+    void cleanUp(bool branchNum, bool renumInstr);
 
 private:
     int nextInstr() {

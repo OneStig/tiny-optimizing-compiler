@@ -39,11 +39,11 @@ DOTGraph::DOTGraph(const std::vector<BasicBlock>& blocks) {
         }
 
         // add comments for name table
-        comments += "==========\nBB" + std::to_string(i) + "\n----------\n";
-        for (const auto& x : blocks[i].nameTable) {
-            comments += x.first + " : " + std::to_string(x.second) + "\n";
-        }
-        comments += "\n";
+        // comments += "==========\nBB" + std::to_string(i) + "\n----------\n";
+        // for (const auto& x : blocks[i].nameTable) {
+        //     comments += x.first + " : " + std::to_string(x.second) + "\n";
+        // }
+        // comments += "\n";
     }
 
     construct += controlFlow + domination + "}\n /*\n" + comments + "*/\n";

@@ -24,7 +24,7 @@ int main(const int argc, char* argv[]) {
     IRBuilder builder;
     int startBlock = 0;
     parser.ast->evaluate(builder, startBlock);
-    builder.cleanUp();
+    builder.cleanUp(false, false);
 
     // Generate dot graph
     DOTGraph g(builder.blocks);

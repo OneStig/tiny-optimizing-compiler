@@ -1,0 +1,28 @@
+main
+function mid(x, y, z); var m; {
+    let m <- z;
+
+    if y < z then
+        if x < y then
+            let m <- y;
+        else
+            if z < z then
+                let m <- x;
+            fi;
+        fi;
+    else
+        if x > y then
+            let m <- y;
+        else
+            if x > z then
+                let m <- x;
+            fi;
+        fi;
+    fi;
+
+    return m
+};
+
+{
+    call OutputNewLine
+}.

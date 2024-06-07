@@ -33,13 +33,15 @@ AST::ASTPtr Parser::funcCall() {
     if (match(curToken, TokenType::PUNCTUATION, "(")) {
         next(TokenType::PUNCTUATION); // consume "("
 
-        do {
-            if (match(curToken, TokenType::PUNCTUATION, ",")) {
-                next(TokenType::PUNCTUATION); // consume ","
-            }
+        if (!match(curToken, TokenType::PUNCTUATION, ")")) {
+            do {
+                if (match(curToken, TokenType::PUNCTUATION, ",")) {
+                    next(TokenType::PUNCTUATION); // consume ","
+                }
 
-            curNode->append(expression());
-        } while (match(curToken, TokenType::PUNCTUATION, ","));
+                curNode->append(expression());
+            } while (match(curToken, TokenType::PUNCTUATION, ","));
+        }
 
         next(TokenType::PUNCTUATION); // consume ")"
     }
