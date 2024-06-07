@@ -24,10 +24,10 @@ var i, j, k, sum;
 };
 
 {
-    let x <- InputNum();
-    let y <- InputNum();
-    let z <- InputNum();
-    let result <- call tripleNestedWhile(x, y, z);
+    let x <- call InputNum;
+    let y <- call InputNum;
+    let z <- call InputNum;
+    let result <- call tripleNestedWhile(z, y, x);
     call OutputNum(result);
     call OutputNewLine;
 }.
