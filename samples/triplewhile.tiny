@@ -1,0 +1,33 @@
+main
+var x, y, z, result;
+
+function tripleNestedWhile(a, b, c);
+var i, j, k, sum;
+{
+    let sum <- 0;
+    let i <- 0;
+
+    while i < a do
+        let j <- 0;
+        while j < b do
+            let k <- 0;
+            while k < c do
+                let sum <- sum + 1;
+                let k <- k + 1;
+            od;
+            let j <- j + 1;
+        od;
+        let i <- i + 1;
+    od;
+
+    return sum;
+};
+
+{
+    let x <- InputNum();
+    let y <- InputNum();
+    let z <- InputNum();
+    let result <- call tripleNestedWhile(x, y, z);
+    call OutputNum(result);
+    call OutputNewLine;
+}.

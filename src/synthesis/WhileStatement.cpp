@@ -1,3 +1,5 @@
+#include <map>
+
 #include "parsing/AST/Statements.h"
 
 int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
@@ -35,15 +37,14 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
 
     // 1. figure out which variables in head and body are different
 
-    std::vector<std::string> diffVars;
+    std::map<std::string, int> diffVars;
 
     for (auto& [var, ssa] : builder.blocks[head].nameTable) {
-        if (ssa == 0) {
-            ssa = builder.emit(0, InsType::CONST, 0);
-        }
-
         if (builder.blocks[body].nameTable[var] != ssa) {
-            diffVars.push_back(var);
+            if (ssa == 0) {
+                ssa = builder.emit(0, InsType::CONST, 0);
+            }
+            diffVars[var] = builder.blocks[body].nameTable[var];
         }
     }
 
@@ -75,8 +76,13 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
 
     // 3. generate necessary phi functions
 
-    for (std::string& var : diffVars) {
-        const int phi = builder.emit(head, InsType::PHI, builder.blocks[head].nameTable[var]);
+    for (auto [var, anticipated] : diffVars) {
+        if (builder.blocks[head].nameTable[var] == 0) {
+            builder.blocks[head].nameTable[var] = builder.emit(0, InsType::CONST, 0);
+        }
+
+        const int phi = builder.emit(head, InsType::PHI, builder.blocks[head].nameTable[var], anticipated);
+
         builder.blocks[head].nameTable[var] = phi;
     }
 
@@ -92,7 +98,7 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
     // 5. fix right side of the phi values
 
     auto it = builder.blocks[head].instructions.begin();
-    for (std::string& var : diffVars) {
+    for (const auto& [var, _] : diffVars) {
         it->y = builder.blocks[body].nameTable[var];
         ++it;
     }
