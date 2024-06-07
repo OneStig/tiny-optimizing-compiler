@@ -53,52 +53,6 @@ int IRBuilder::newBlock() {
 }
 
 void IRBuilder::cleanUp() {
-    // first perform dead code elimination
-    // std::vector<int> degree(blocks.size());
-    //
-    // for (const BasicBlock& block : blocks) {
-    //     degree[block.domBy]++;
-    // }
-    //
-    // std::stack<int> toVisit;
-    //
-    // for (int i = 0; i < degree.size(); i++) {
-    //     if (degree[i] == 0) {
-    //         toVisit.push(i);
-    //     }
-    // }
-    //
-    // const std::unordered_set<InsType> canElim = {
-    //     InsType::CONST, InsType::ADD, InsType::SUB, InsType::MUL, InsType::DIV,
-    //     InsType::PHI
-    // };
-    // std::unordered_set<int> seenInstr;
-    //
-    // while (!toVisit.empty()) {
-    //     int curBlock = toVisit.top();
-    //     std::list<Instruction>& curInstructions = blocks[curBlock].instructions;
-    //     toVisit.pop();
-    //
-    //     for (auto it = curInstructions.rbegin(); it != curInstructions.rend();) {
-    //         if (canElim.contains(it->type) && !seenInstr.contains(it->id)) {
-    //             auto toDelete = it;
-    //             ++it;
-    //             curInstructions.erase(toDelete.base());
-    //         }
-    //         else {
-    //             if (it->type != InsType::CONST) {
-    //                 seenInstr.insert(it->x);
-    //                 seenInstr.insert(it->y);
-    //             }
-    //
-    //             ++it;
-    //         }
-    //     }
-    //
-    //     if (--degree[blocks[curBlock].domBy] == 0) {
-    //         toVisit.push(blocks[curBlock].domBy);
-    //     }
-    // }
 
     // first populate empty blocks with empty instruction
     for (int i = 0; i < blocks.size(); i++) {
@@ -111,19 +65,20 @@ void IRBuilder::cleanUp() {
     // branch numbers are stored as negative numbers
 
     for (BasicBlock& block : blocks) {
-        Instruction& last = block.instructions.back();
-
-        if (last.type == InsType::BRA || last.type == InsType::JSR) {
-            last.x = blocks[-last.x].instructions.front().id;
-        }
-        else if (last.type == InsType::BNE || last.type == InsType::BEQ ||
-                last.type == InsType::BLE || last.type == InsType::BLT ||
-                last.type == InsType::BGE || last.type == InsType::BGT) {
-            last.y = blocks[-last.y].instructions.front().id;
+        for (Instruction& last : block.instructions) {
+            if (last.type == InsType::BRA || last.type == InsType::JSR) {
+                last.x = blocks[-last.x].instructions.front().id;
+            }
+            else if (last.type == InsType::BNE || last.type == InsType::BEQ ||
+                    last.type == InsType::BLE || last.type == InsType::BLT ||
+                    last.type == InsType::BGE || last.type == InsType::BGT) {
+                last.y = blocks[-last.y].instructions.front().id;
+            }
         }
     }
 
     // then let's go through and re-number all instructions
+
     int nextID{1};
 
     std::stack<int> toRenum;
