@@ -2,6 +2,7 @@
 
 #include <queue>
 #include <stack>
+// #include <iostream>
 
 int IRBuilder::emit(const int& block, const InsType type, const int x, const int y, const bool front) {
     const InstrSig signature{type, x, y};
@@ -20,6 +21,9 @@ int IRBuilder::emit(const int& block, const InsType type, const int x, const int
             dominated = blocks[dominated].domBy;
         }
     }
+
+    // I don't think this works
+
     // else if (type == InsType::PHI) {
     //     if (blocks[block].redunInstr.contains(signature)) {
     //         return blocks[block].redunInstr[signature];
@@ -131,7 +135,8 @@ void IRBuilder::cleanUp(bool branchNum, bool renumInstr) {
 
         // second renumbering pass
 
-        for (BasicBlock& block : blocks) {
+        for (int i = 0; i < blocks.size(); i++) {
+            BasicBlock& block = blocks[i];
             for (Instruction& ins : block.instructions) {
                 if (ins.type != InsType::MT && ins.type != InsType::CONST &&
                     ins.type != InsType::READ && ins.type != InsType::WRITENL) {
@@ -141,6 +146,17 @@ void IRBuilder::cleanUp(bool branchNum, bool renumInstr) {
                     renum(ins.y);
                 }
             }
+
+            // std::cout << "BB" << std::to_string(i) << ": ";
+            //
+            // for (auto [var, ssa] : block.nameTable) {
+            //     if (ssa != 0) {
+            //         renum(ssa);
+            //     }
+            //     std::cout << "(" << var << ": " << std::to_string(ssa) << ") ";
+            // }
+            //
+            // std::cout << '\n';
         }
     }
 }

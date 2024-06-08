@@ -12,7 +12,7 @@
 
 class DOTGraph {
 public:
-    explicit DOTGraph(const std::vector<BasicBlock>& blocks);
+    explicit DOTGraph(const std::vector<BasicBlock>& blocks, std::string fileName);
 
     void visualize() const;
 

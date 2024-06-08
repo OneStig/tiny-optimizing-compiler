@@ -5,8 +5,8 @@
 #include <sstream>
 #include <iomanip>
 
-DOTGraph::DOTGraph(const std::vector<BasicBlock>& blocks) {
-    construct = "digraph G {\n";
+DOTGraph::DOTGraph(const std::vector<BasicBlock>& blocks, std::string fileName) {
+    construct = "//\n// " + fileName + "\n//\n\ndigraph G {\n";
     std::string controlFlow;
     std::string domination;
     std::string comments;
@@ -37,16 +37,9 @@ DOTGraph::DOTGraph(const std::vector<BasicBlock>& blocks) {
                 ":b -> bb" + std::to_string(i) +
                 ":b [color=blue, fontcolor=blue, style=dotted, label=\"dom\"]\n";
         }
-
-        // add comments for name table
-        // comments += "==========\nBB" + std::to_string(i) + "\n----------\n";
-        // for (const auto& x : blocks[i].nameTable) {
-        //     comments += x.first + " : " + std::to_string(x.second) + "\n";
-        // }
-        // comments += "\n";
     }
 
-    construct += controlFlow + domination + "}\n /*\n" + comments + "*/\n";
+    construct += controlFlow + domination + "}\n";
 }
 
 std::string urlEncode(const std::string &data) {

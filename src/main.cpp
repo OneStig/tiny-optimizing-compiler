@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <iostream>
+#include <filesystem>
 
 #include "lexing/FileReader.h"
 #include "lexing/Lexer.h"
@@ -12,6 +13,8 @@ int main(const int argc, char* argv[]) {
         std::cerr << "Usage: " << argv[0] << " <tiny source file>" << std::endl;
         return 1;
     }
+
+    std::filesystem::path filePath = argv[1];
 
     // Read source file and tokenize contents
     FileReader fr(argv[1]);
@@ -27,7 +30,7 @@ int main(const int argc, char* argv[]) {
     builder.cleanUp(true, true);
 
     // Generate dot graph
-    DOTGraph g(builder.blocks);
+    DOTGraph g(builder.blocks, filePath.stem());
     g.visualize();
 
     return 0;
