@@ -14,10 +14,12 @@ public:
     int instructionNum{};
     int constantNum{INT_MAX};
     bool isVoid;
+    bool analysisMode;
 
     IRBuilder() {
         // Constants block
         newBlock();
+        analysisMode = false;
     }
 
     int emit(const int& block, InsType type, int x = 0, int y = 0, bool front = false);

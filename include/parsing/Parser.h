@@ -5,6 +5,7 @@
 
 #include "AST/ASTMaster.h"
 #include "lexing/Lexer.h"
+#include "lexing/Tiny.h"
 
 class Parser {
 private:

@@ -23,6 +23,9 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
 
     builder.blocks[head].follow = body;
 
+    const bool alreadyAnalyzing = builder.analysisMode;
+    builder.analysisMode = true;
+
     // take a snapshot of state here to roll back to later in (2)
     const unsigned long totalBlocks = builder.blocks.size();
     const int snapshotSSA = builder.instructionNum;
@@ -49,6 +52,10 @@ int AST::WhileStatement::evaluate(IRBuilder& builder, int& block) {
     }
 
     // 2. rollback all generated code to the current state.
+
+    if (!alreadyAnalyzing) {
+        builder.analysisMode = false;
+    }
 
     body = origBody;
 

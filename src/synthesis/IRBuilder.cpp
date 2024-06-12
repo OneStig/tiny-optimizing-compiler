@@ -146,17 +146,6 @@ void IRBuilder::cleanUp(bool branchNum, bool renumInstr) {
                     renum(ins.y);
                 }
             }
-
-            // std::cout << "BB" << std::to_string(i) << ": ";
-            //
-            // for (auto [var, ssa] : block.nameTable) {
-            //     if (ssa != 0) {
-            //         renum(ssa);
-            //     }
-            //     std::cout << "(" << var << ": " << std::to_string(ssa) << ") ";
-            // }
-            //
-            // std::cout << '\n';
         }
     }
 }

@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "lexing/Tiny.h"
+
 int AST::Expression::evaluate(IRBuilder& builder, int& block) {
     int curSSA = children[0]->evaluate(builder, block);
 
@@ -35,10 +37,11 @@ int AST::Identifier::evaluate(IRBuilder& builder, int& block) {
     int& varSSA = builder.blocks[block].nameTable[name];
 
     if (varSSA == 0) {
-        // scuffed warning fix later
         varSSA = builder.emit(0, InsType::CONST, 0);
-        std::cout << "Warning, variable '" << name << "' used before initializing. "
-                                                      "It has been initialied to 0 by default.\n";
+
+        if (!builder.analysisMode) {
+            unusedWarning(name);
+        }
     }
 
     return builder.blocks[block].nameTable[name];

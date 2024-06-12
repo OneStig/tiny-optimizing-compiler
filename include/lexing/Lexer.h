@@ -2,14 +2,9 @@
 #define LEXER_H
 
 #include <string>
+#include <iostream>
 #include "Token.h"
 #include "FileReader.h"
-
-class TinySyntaxError final : public std::runtime_error {
-public:
-    explicit TinySyntaxError(const std::string& err)
-        : std::runtime_error(err) {};
-};
 
 class Lexer {
 public:

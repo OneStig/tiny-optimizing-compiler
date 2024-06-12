@@ -1,3 +1,4 @@
+#include "lexing/Tiny.h"
 #include "parsing/AST/Statements.h"
 
 int AST::IfStatement::evaluate(IRBuilder &builder, int& block) {
@@ -44,6 +45,21 @@ int AST::IfStatement::evaluate(IRBuilder &builder, int& block) {
             builder.blocks[join].nameTable[varName] = builder.blocks[branch].nameTable[varName];
         }
         else {
+            if (builder.blocks[follow].nameTable[varName] == 0) {
+                builder.blocks[follow].nameTable[varName] = builder.emit(0, InsType::CONST, 0);
+
+                if (!builder.analysisMode) {
+                    unusedWarning(varName);
+                }
+            }
+            else if (builder.blocks[branch].nameTable[varName] == 0) {
+                builder.blocks[branch].nameTable[varName] = builder.emit(0, InsType::CONST, 0);
+
+                if (!builder.analysisMode) {
+                    unusedWarning(varName);
+                }
+            }
+
             const int varVal = builder.emit(join, InsType::PHI,
                 builder.blocks[follow].nameTable[varName],
                 builder.blocks[branch].nameTable[varName]);

@@ -1,5 +1,7 @@
 #include <lexing/Lexer.h>
 
+#include "lexing/Tiny.h"
+
 Token Lexer::nextToken() {
     while (isspace(curChar)) {
         next();

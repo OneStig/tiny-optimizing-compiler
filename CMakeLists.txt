@@ -30,6 +30,7 @@ add_executable(tiny_optimizing_compiler src/main.cpp
         src/synthesis/Declarations.cpp
         src/synthesis/IfStatement.cpp
         src/synthesis/WhileStatement.cpp
+        include/lexing/Tiny.h
 )
 
 enable_testing()
